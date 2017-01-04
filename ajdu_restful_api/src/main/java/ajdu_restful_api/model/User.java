@@ -29,14 +29,13 @@ public class User {
 	
 
 	public User(String firstName, String lastName, String login,
-			String password, String email, boolean active, Date dateCreated) {
+			String password, String email, Date dateCreated) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.login = login;
 		this.password = password;
 		this.email = email;
-		this.active = active;
 		this.dateCreated = dateCreated;
 	}
 
