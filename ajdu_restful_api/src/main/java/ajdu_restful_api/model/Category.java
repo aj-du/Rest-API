@@ -1,8 +1,13 @@
 package ajdu_restful_api.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Category {
@@ -11,6 +16,14 @@ public class Category {
 	@GeneratedValue
 	private Integer id;
 	private String name;
+	
+	@ManyToMany
+	@JoinTable(
+			name="service_category",
+			joinColumns={@JoinColumn(name="category_id")},
+			inverseJoinColumns={@JoinColumn(name="service_id")}
+			)
+	private List<Service> services;
 	
 	public Category(){};
 	public Category(String name) {

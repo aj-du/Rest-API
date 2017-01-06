@@ -1,0 +1,102 @@
+package ajdu_restful_api.model;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+public class Blog {
+
+	@Id
+	@GeneratedValue
+	private Integer id;
+	private String title;
+	private String description;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dateCreated;
+	
+	@OneToOne
+	@JoinColumn(name="user_id")
+	private User user;
+	
+	@OneToMany(mappedBy="blog")
+	private List<Post> posts;
+	
+	public Blog(){}
+
+	public Blog(String title, String description, Date dateCreated, User user,
+			List<Post> posts) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.dateCreated = dateCreated;
+		this.user = user;
+		this.posts = posts;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
+	@Override
+	public String toString() {
+		return "Blog [id=" + id + ", title=" + title + ", description="
+				+ description + ", dateCreated=" + dateCreated + ", user="
+				+ user + ", posts=" + posts + "]";
+	}
+	
+	
+}

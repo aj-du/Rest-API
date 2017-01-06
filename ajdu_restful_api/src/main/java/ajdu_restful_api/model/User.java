@@ -1,6 +1,5 @@
 package ajdu_restful_api.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -34,6 +35,16 @@ public class User {
 				inverseJoinColumns={@JoinColumn(name="role_id")})
 	private List<Role> roles;
 	
+	@OneToOne(mappedBy="user")
+	private Package pack;
+
+	@OneToOne(mappedBy="user")
+	private Blog blog;
+	
+	@OneToOne(mappedBy="user")
+	private Schedule schedule;
+	
+
 	@Column(columnDefinition="boolean default false")
 	private boolean active;
 	
@@ -41,9 +52,13 @@ public class User {
 	@Column(columnDefinition="datetime default CURRENT_TIMESTAMP")
 	private Date dateCreated;
 	
+	@OneToMany(mappedBy="user")
+	private List<Opinion> opinions;
+	
+	@OneToMany(mappedBy="user")
+	private List<Comment> comments;
+	
 	public User() {}
-	
-	
 
 	public User(String firstName, String lastName, String login,
 			String password, String email, Date dateCreated) {
@@ -54,11 +69,7 @@ public class User {
 		this.password = password;
 		this.email = email;
 		this.dateCreated = dateCreated;
-		roles = new ArrayList<Role>();
-		roles.add(new Role(2, "REG_USER"));
 	}
-
-
 
 	public Integer getId() {
 		return id;
@@ -108,30 +119,21 @@ public class User {
 		this.email = email;
 	}
 
-	
-
-	public boolean isActive() {
-		return active;
-	}
-
-
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-
-
 	public List<Role> getRoles() {
 		return roles;
 	}
-
-
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
 
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
 	public Date getDateCreated() {
 		return dateCreated;
@@ -141,17 +143,55 @@ public class User {
 		this.dateCreated = dateCreated;
 	}
 
+	public List<Opinion> getOpinions() {
+		return opinions;
+	}
 
+	public void setOpinions(List<Opinion> opinions) {
+		this.opinions = opinions;
+	}
+	
+
+	public Package getPack() {
+		return pack;
+	}
+
+	public void setPack(Package pack) {
+		this.pack = pack;
+	}
+
+	public Schedule getSchedule() {
+		return schedule;
+	}
+
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
+	}
+
+	public Blog getBlog() {
+		return blog;
+	}
+
+	public void setBlog(Blog blog) {
+		this.blog = blog;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
 
 	@Override
 	public String toString() {
-		
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", login=" + login + ", role=" + roles+ ", password=" + password
-				+ ", email=" + email + ", isActive=" + active
-				+ ", dateCreated=" + dateCreated + "]";
+				+ lastName + ", login=" + login + ", password=" + password
+				+ ", email=" + email + ", roles=" + roles + ", active="
+				+ active + ", dateCreated=" + dateCreated + ", opinions="
+				+ opinions + "]";
 	}
-
 	
 	
 

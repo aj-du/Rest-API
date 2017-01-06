@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,6 +41,9 @@ public class Organization {
 				inverseJoinColumns={@JoinColumn(name="category_id")})
 	private List<Category> categories;
 
+	@OneToMany(mappedBy="organization")
+	private List<Service> services;
+	
 	public Organization() {}
 
 	public Organization(String name, String login, String password,
@@ -126,6 +130,15 @@ public class Organization {
 
 	public void setCategories(List<Category> categories) {
 		this.categories = categories;
+	}
+	
+
+	public List<Service> getServices() {
+		return services;
+	}
+
+	public void setServices(List<Service> services) {
+		this.services = services;
 	}
 
 	@Override
