@@ -17,15 +17,26 @@ CREATE TABLE `User` (
 	`Password` varchar(40) NOT NULL,
 	`Email` varchar(40) NOT NULL,
 	`Role_ID` bigint NOT NULL DEFAULT '2',
-	`Active` bool NOT NULL DEFAULT '0',
-	`Date_Created` DATETIME NOT NULL,
+	`Active` bool NOT NULL DEFAULT false,
+	`Date_Created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`ID`)
 );
+
+CREATE TABLE `User_Role` (
+	`User_ID` bigint NOT NULL,
+	`Role_ID` bigint NOT NULL,
+	PRIMARY KEY (`User_ID`, `Role_ID`)
+);
+
+INSERT INTO `user` (`First_Name`,`Last_Name`,`Login`,`Password`,`Email`,`Role_ID`) VALUES ("Jan","Kowalski","jkowal","qwerty123456","jkowal@test.com",1);
+INSERT INTO `user` (`First_Name`,`Last_Name`,`Login`,`Password`,`Email`) VALUES ("Jane","Doe","jdoe","P@ssw0rd","j@test.com");
+INSERT INTO `user` (`First_Name`,`Last_Name`,`Login`,`Password`,`Email`) VALUES ("Test3First","Test3Last","test_user","P@ssw0rd","test@test.com");
+
 
 
 CREATE TABLE `Package` (
 	`ID` bigint NOT NULL AUTO_INCREMENT,
-	`Total_Cost` DECIMAL(10,2) NOT NULL DEFAULT '0',
+	`Total_Cost` DECIMAL(10,2) NOT NULL DEFAULT '0.00',
 	`Date_Created` DATETIME NOT NULL,
 	PRIMARY KEY (`ID`)
 );
@@ -152,7 +163,7 @@ CREATE TABLE `Movie` (
 	`ID` bigint NOT NULL AUTO_INCREMENT,
 	`Title` varchar(40) NOT NULL,
 	`File` longblob NOT NULL,
-	`Service_ID` longblob NOT NULL,
+	`Service_ID` bigint NOT NULL,
 	PRIMARY KEY (`ID`)
 );
 
@@ -207,4 +218,8 @@ ALTER TABLE `Comment` ADD CONSTRAINT `Comment_fk1` FOREIGN KEY (`Post_ID`) REFER
 ALTER TABLE `Movie` ADD CONSTRAINT `Movie_fk0` FOREIGN KEY (`Service_ID`) REFERENCES `Service`(`ID`);
 
 ALTER TABLE `Image` ADD CONSTRAINT `Image_fk0` FOREIGN KEY (`Service_ID`) REFERENCES `Service`(`ID`);
+
+ALTER TABLE `User_Role` ADD CONSTRAINT `User_Role_fk0` FOREIGN KEY (`User_ID`) REFERENCES `User`(`ID`);
+
+ALTER TABLE `User_Role` ADD CONSTRAINT `User_Role_fk1` FOREIGN KEY (`Role_ID`) REFERENCES `Role`(`ID`);
 

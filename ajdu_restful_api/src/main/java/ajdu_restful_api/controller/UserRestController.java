@@ -12,7 +12,7 @@ import ajdu_restful_api.model.User;
 import ajdu_restful_api.service.UserService;
 
 @RestController
-public class SampleRestController {
+public class UserRestController {
 
 	@Autowired
 	private UserService userService;
@@ -25,6 +25,11 @@ public class SampleRestController {
 	@GetMapping("/allusers")
 	public List<User> allUsers(){
 		return userService.findAll();
+	}
+	
+	@GetMapping("/user")
+	public User findOneUser(@RequestParam int id){
+		return userService.findUser(id);
 	}
 	
 	@GetMapping("/saveuser")
@@ -44,5 +49,6 @@ public class SampleRestController {
 		userService.delete(id);
 		return "User deleted!";
 	}
+	
 
 }

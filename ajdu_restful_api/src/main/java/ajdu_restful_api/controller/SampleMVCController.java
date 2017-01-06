@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import ajdu_restful_api.service.UserService;
 
 @Controller
-public class MainController {
+public class SampleMVCController {
 
 	@Autowired
 	private UserService userService;
