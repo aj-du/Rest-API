@@ -29,8 +29,7 @@ public class Role {
 	
 	
 	public Role() {}
-	public Role(Integer id, String rn) {
-		this.id=id;
+	public Role(String rn) {
 		this.roleName=rn;
 	}
 
