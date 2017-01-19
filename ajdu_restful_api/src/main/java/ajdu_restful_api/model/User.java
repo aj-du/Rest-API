@@ -16,6 +16,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class User {
@@ -37,12 +39,15 @@ public class User {
 	private List<Role> roles;
 	
 	@OneToOne(mappedBy="user")
+	@JsonIgnore
 	private Package pack;
 
 	@OneToOne(mappedBy="user")
+	@JsonIgnore
 	private Blog blog;
 	
 	@OneToOne(mappedBy="user")
+	@JsonIgnore
 	private Schedule schedule;
 	
 
@@ -160,7 +165,7 @@ public class User {
 	public void setPack(Package pack) {
 		this.pack = pack;
 	}
-
+	
 	public Schedule getSchedule() {
 		return schedule;
 	}

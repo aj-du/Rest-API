@@ -1,6 +1,6 @@
 package ajdu_restful_api.model;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Task {
@@ -21,8 +23,9 @@ public class Task {
 	private String description;
 	
 	@Temporal(TemporalType.DATE)
-	private Date dueDate;
+	private Calendar dueDate;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="schedule_id")
 	private Schedule schedule;
@@ -35,14 +38,10 @@ public class Task {
 	public Task(){}
 
 
-	public Task(String name, String description, Date dueDate,
-			Schedule schedule, TaskStatus status) {
+	public Task(String name, Schedule schedule) {
 		super();
 		this.name = name;
-		this.description = description;
-		this.dueDate = dueDate;
 		this.schedule = schedule;
-		this.status = status;
 	}
 
 
@@ -76,12 +75,12 @@ public class Task {
 	}
 
 
-	public Date getDueDate() {
+	public Calendar getDueDate() {
 		return dueDate;
 	}
 
 
-	public void setDueDate(Date dueDate) {
+	public void setDueDate(Calendar dueDate) {
 		this.dueDate = dueDate;
 	}
 

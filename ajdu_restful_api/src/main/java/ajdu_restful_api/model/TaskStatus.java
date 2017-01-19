@@ -1,5 +1,6 @@
 package ajdu_restful_api.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -14,13 +15,18 @@ public class TaskStatus {
 	@GeneratedValue
 	private Integer id;
 	
+	private String name;
+	
 	@OneToMany(mappedBy="status")
 	private List<Task> tasks;
 	
-	public TaskStatus(){}
+	public TaskStatus(){
+		this.tasks = new ArrayList<Task>();
+	}
 
-	public TaskStatus(List<Task> tasks) {
+	public TaskStatus(String name, List<Task> tasks) {
 		super();
+		this.name = name;
 		this.tasks = tasks;
 	}
 
@@ -30,6 +36,14 @@ public class TaskStatus {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public List<Task> getTasks() {
@@ -42,8 +56,10 @@ public class TaskStatus {
 
 	@Override
 	public String toString() {
-		return "TaskStatus [id=" + id + ", tasks=" + tasks + "]";
+		return "TaskStatus [id=" + id + ", name=" + name + ", tasks=" + tasks
+				+ "]";
 	}
+
 	
 	
 }

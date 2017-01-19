@@ -9,3 +9,7 @@ insert into user (first_name,last_name,email,login,password) values ("Zbychu","K
 insert into user_role (user_id,role_id) values (1,1);
 insert into user_role (user_id,role_id) values (1,2);
 insert into user_role (user_id,role_id) values (2,2);
+
+insert into task_status (name) values ("TODO");
+insert into task_status (name) values ("INPROGRESS");
+insert into task_status (name) values ("DONE");
