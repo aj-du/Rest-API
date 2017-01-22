@@ -3,6 +3,8 @@ package ajdu_restful_api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,9 +33,15 @@ public class TaskRestController {
 	}
 	
 	@GetMapping("/savetask")
-	public String saveTask(@RequestParam String name, @RequestParam int scheduleId) {
+	public ResponseEntity<Task> saveTask(@RequestParam String name, @RequestParam int scheduleId) {
 		Task t = new Task(name, scheduleService.findSchedule(scheduleId));
 		taskService.saveTask(t);
-		return "redirect:/alltasks?scheduleID="+scheduleId;
+		return new ResponseEntity<Task>(t,HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/deletetask")
+	public String deleteTask(@RequestParam int id){
+		taskService.deleteTask(id);
+		return "Task with id "+id+" has been removed.";
 	}
 }

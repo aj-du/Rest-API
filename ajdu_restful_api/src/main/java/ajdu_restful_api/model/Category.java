@@ -25,6 +25,14 @@ public class Category {
 			)
 	private List<Service> services;
 	
+	@ManyToMany
+	@JoinTable(
+				name="organization_category",
+				joinColumns={@JoinColumn(name="category_id")},
+				inverseJoinColumns={@JoinColumn(name="organization_id")}
+				)
+	private List<Organization> organizations;
+	
 	public Category(){};
 	public Category(String name) {
 		super();

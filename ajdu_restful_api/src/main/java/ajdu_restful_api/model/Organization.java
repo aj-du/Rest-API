@@ -3,6 +3,8 @@ package ajdu_restful_api.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -26,12 +28,16 @@ public class Organization {
 	private String login;
 	private String password;
 	private String email;
+	private String phoneNumber;
+	
+	@Column(columnDefinition="boolean default false")
 	private boolean active;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP")
 	private Date dateCreated;
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="address_id")
 	private Address address;
 	
@@ -141,13 +147,24 @@ public class Organization {
 		this.services = services;
 	}
 
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
 	@Override
 	public String toString() {
 		return "Organization [id=" + id + ", name=" + name + ", login=" + login
-				+ ", password=" + password + ", email=" + email + ", active="
-				+ active + ", dateCreated=" + dateCreated + ", address="
-				+ address + ", categories=" + categories + "]";
+				+ ", password=" + password + ", email=" + email
+				+ ", phoneNumber=" + phoneNumber + ", active=" + active
+				+ ", dateCreated=" + dateCreated + ", address=" + address
+				+ ", categories=" + categories + ", services=" + services + "]";
 	}
+
+
 	
 	
 

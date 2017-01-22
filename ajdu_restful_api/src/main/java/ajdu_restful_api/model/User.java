@@ -55,7 +55,7 @@ public class User {
 	private boolean active;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(columnDefinition="datetime default CURRENT_TIMESTAMP")
+	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP")
 	private Date dateCreated;
 	
 	@OneToMany(mappedBy="user")

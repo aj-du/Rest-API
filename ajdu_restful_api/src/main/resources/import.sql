@@ -13,3 +13,34 @@ insert into user_role (user_id,role_id) values (2,2);
 insert into task_status (name) values ("TODO");
 insert into task_status (name) values ("INPROGRESS");
 insert into task_status (name) values ("DONE");
+
+insert into schedule (user_id) values (1);
+
+insert into task (name, description, schedule_id, status_id, due_date) values ("Zrobić inżynierkę", "Napisać i obronić aplikację AJDU",1,2,date("2017-06-30"))
+insert into task (name, description, schedule_id, status_id, due_date) values ("Zaliczyć semestr", "Pozaliczać wszystkie inne przedmioty",1,1,date("2017-02-14"))
+
+insert into category (name) values ("Sala weselna");
+insert into category (name) values ("Zespół");
+insert into category (name) values ("Catering");
+insert into category (name) values ("Obsługa");
+insert into category (name) values ("Fotografia");
+insert into category (name) values ("Film");
+insert into category (name) values ("Fryzjer");
+insert into category (name) values ("Kwiaciarnia");
+insert into category (name) values ("Wystrój");
+insert into category (name) values ("Samochód");
+insert into category (name) values ("Koordynacja");
+insert into category (name) values ("Hotel");
+insert into category (name) values ("Transport");
+insert into category (name) values ("Odzież");
+insert into category (name) values ("Atrakcje dodatkowe");
+
+insert into address (city, country, line1, line2, postal_code, region) values ("Gdansk", "PL","Sala Weselna \"Olimp\"","Kartuska 123","80-012","pomorskie");
+insert into address (city, country, line1, line2, postal_code, region) values ("Wejherowo", "PL","Restauracja \"Nova\"","Lęborska 12H","80-240","pomorskie");
+
+insert into organization (name,login,password,email,address_id) values ("Sala Weselna \"Olimp\"","olimp_gda","salaweslna123a","olimp_gdansk@firma.pl",1);
+
+insert into organization_category (organization_id,category_id) values (1,1);
+insert into organization_category (organization_id,category_id) values (1,3);
+insert into organization_category (organization_id,category_id) values (1,4);
+insert into organization_category (organization_id,category_id) values (1,12);

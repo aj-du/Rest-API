@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class TaskStatus {
 
@@ -17,6 +19,7 @@ public class TaskStatus {
 	
 	private String name;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="status")
 	private List<Task> tasks;
 	

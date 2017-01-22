@@ -11,6 +11,7 @@ public class Address {
 	@Id
 	@GeneratedValue
 	private Integer id;
+	
 	private String city;
 	private String postalCode;
 	private String country;
