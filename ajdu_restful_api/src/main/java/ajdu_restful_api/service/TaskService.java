@@ -28,6 +28,10 @@ public class TaskService {
 		return taskRepository.findOne(id);
 	}
 	
+	public List<Task> findAll(){
+		return (List<Task>)taskRepository.findAll();
+	}
+	
 	public List<Task> findAllTaskBySchedule(@RequestParam int scheduleID){
 		return scheduleService.findSchedule(scheduleID).getTasks();
 	}

@@ -28,4 +28,17 @@ public class RoleService {
 		}
 		return roles;
 	}
+	
+	public Role findRole(int id) {
+		return roleRepo.findOne(id);
+	}
+	
+	public void deleteRole(int id) {
+		 roleRepo.delete(id);
+	}
+	
+	public void addRole(Role role) {
+		roleRepo.save(role);
+	}
+	
 }

@@ -3,6 +3,7 @@ package ajdu_restful_api.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,7 +18,7 @@ public class Schedule {
 	@GeneratedValue
 	private Integer id;
 	
-	@OneToMany(mappedBy="schedule")
+	@OneToMany(mappedBy="schedule", cascade=CascadeType.REMOVE)
 	private List<Task> tasks;
 	
 	@OneToOne

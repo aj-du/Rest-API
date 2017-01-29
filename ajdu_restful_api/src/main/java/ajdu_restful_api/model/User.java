@@ -1,5 +1,6 @@
 package ajdu_restful_api.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -75,6 +76,7 @@ public class User {
 		this.password = password;
 		this.email = email;
 		this.dateCreated = dateCreated;
+		this.roles = new ArrayList<Role>();
 	}
 
 	public Integer getId() {

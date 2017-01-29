@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ajdu_restful_api.model.Organization;
@@ -27,17 +27,12 @@ public class OrganizationRestController {
 	@Autowired
 	private CategoryService categoryService;
 	
-	@GetMapping("/allorgs")
+	@RequestMapping(value="/orgs",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<Organization>> getAllOrgs() {
 		return new ResponseEntity<List<Organization>>(organizationService.findAllOrgs(),HttpStatus.OK);
 	}
 	
-	@GetMapping("/org")
-	public ResponseEntity<Organization> getOrg(@RequestParam int id) {
-		return new ResponseEntity<Organization>(organizationService.findOneOrg(id),HttpStatus.OK);
-	}
-	
-	@RequestMapping(value="/addorg",method=RequestMethod.POST)
+	@RequestMapping(value="/orgs",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Organization> saveOrg(@RequestBody Organization org) {
 		
 		if(organizationService.findOrgByLogin(org.getLogin()) == null) {			
@@ -48,10 +43,42 @@ public class OrganizationRestController {
 		return new ResponseEntity<Organization>(HttpStatus.CONFLICT);
 	}
 	
-	@GetMapping("/deleteorg")
-	public ResponseEntity<Organization> deleteOrg(@RequestParam int id) {
-		organizationService.deleteOrg(id);
-		return new ResponseEntity<Organization>(HttpStatus.OK);
+	@RequestMapping(value="/orgs/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Organization> getOrg(@PathVariable int id) {
+		Organization org = organizationService.findOneOrg(id);
+		if(org != null)
+			return new ResponseEntity<Organization>(org,HttpStatus.OK);
+		else 
+			return new ResponseEntity<Organization>(HttpStatus.NOT_FOUND);
+	}	
+	
+	@RequestMapping(value="/orgs/{id}",method=RequestMethod.DELETE)
+	public ResponseEntity<Organization> deleteOrg(@PathVariable int id) {
+		Organization org = organizationService.findOneOrg(id);
+		if(org != null) {
+			organizationService.deleteOrg(id);
+			return new ResponseEntity<Organization>(HttpStatus.OK);
+		}
+		else 
+			return new ResponseEntity<Organization>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(value="/orgs/{id}",method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Organization> updateOrg(@PathVariable int id, @RequestBody Organization org) {
+		Organization o = organizationService.findOneOrg(id);
+		if(o != null) {
+			o.setActive(org.isActive());
+			o.setAddress(org.getAddress());
+			o.setCategories(org.getCategories());
+			o.setEmail(org.getEmail());
+			o.setLogin(org.getLogin());
+			o.setPassword(org.getPassword());
+			o.setPhoneNumber(org.getPhoneNumber());
+			o.setServices(org.getServices());
+			return new ResponseEntity<Organization>(o, HttpStatus.OK);
+		}
+		else 
+			return new ResponseEntity<Organization>(HttpStatus.NOT_FOUND);
 	}
 	
 }
