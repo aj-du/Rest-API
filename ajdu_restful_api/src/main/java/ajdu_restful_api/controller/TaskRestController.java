@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ajdu_restful_api.model.Schedule;
 import ajdu_restful_api.model.Task;
 import ajdu_restful_api.service.ScheduleService;
 import ajdu_restful_api.service.TaskService;
@@ -25,11 +25,12 @@ public class TaskRestController {
 	
 	@Autowired
 	ScheduleService scheduleService;
-	
+		
 	@RequestMapping(value="/tasks",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<Task>> getAllTask() {
 			return new ResponseEntity<List<Task>>(taskService.findAll(),HttpStatus.OK);
 	}
+	
 	
 	@RequestMapping(value="/tasks/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Task> getTask(@PathVariable int id) {
@@ -38,12 +39,6 @@ public class TaskRestController {
 		else return new ResponseEntity<Task>(HttpStatus.NOT_FOUND);
 	}
 	
-	@RequestMapping(value="/tasks",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Task> saveTask(@RequestParam String name, @RequestParam int scheduleId) {
-		Task t = new Task(name, scheduleService.findSchedule(scheduleId));
-		taskService.saveTask(t);
-		return new ResponseEntity<Task>(t,HttpStatus.CREATED);
-	}
 	
 	@RequestMapping(value="/tasks/{id}",method=RequestMethod.DELETE)
 	public ResponseEntity<Task> deleteTask(@PathVariable int id) {
@@ -65,5 +60,14 @@ public class TaskRestController {
 			return new ResponseEntity<Task>(t, HttpStatus.OK);
 		}
 		else return new ResponseEntity<Task>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(value="/tasks/{id}/schedule",method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Schedule> getTaskSchedule(@PathVariable int id){
+		Task t = taskService.findTask(id);
+		if(t != null && t.getSchedule() != null) 
+			return new ResponseEntity<Schedule>(t.getSchedule(),HttpStatus.OK);
+		else return new ResponseEntity<Schedule>(HttpStatus.NOT_FOUND);
+		
 	}
 }

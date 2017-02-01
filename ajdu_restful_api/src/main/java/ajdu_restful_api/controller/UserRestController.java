@@ -1,6 +1,7 @@
 package ajdu_restful_api.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ajdu_restful_api.model.Package;
 import ajdu_restful_api.model.Role;
+import ajdu_restful_api.model.Schedule;
 import ajdu_restful_api.model.User;
+import ajdu_restful_api.service.PackageService;
 import ajdu_restful_api.service.RoleService;
 import ajdu_restful_api.service.UserService;
 
@@ -26,6 +30,8 @@ public class UserRestController {
 	private UserService userService;
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+	private PackageService packService;
 	
 	@GetMapping("/hello")
 	public String hello(){
@@ -94,9 +100,29 @@ public class UserRestController {
 	public ResponseEntity<User> findUserByLogin(@PathVariable String login) {
 		if(userService.findUserByLogin(login) != null)
 			return new ResponseEntity<User> (userService.findUserByLogin(login), HttpStatus.OK);
-		else return new ResponseEntity<User> (HttpStatus.NO_CONTENT);
+		else return new ResponseEntity<User> (HttpStatus.NOT_FOUND);
 	}
 	
+	@RequestMapping(value="/users/{id}/schedule", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Schedule> getUserSchedule(@PathVariable int id){
+		User u = userService.findUser(id);
+		if(u != null && u.getSchedule() != null) 
+			return new ResponseEntity<Schedule>(u.getSchedule(),HttpStatus.OK);
+		else return new ResponseEntity<Schedule>(HttpStatus.NOT_FOUND);
+	}
 	
+	@RequestMapping(value="/users/{id}/package", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Package> setUserPackage(@PathVariable int id, @RequestBody Package pack) {
+		User u = userService.findUser(id);
+		if(u != null && u.getPack() == null) {
+			u.setPack(pack);
+			pack.setDateCreated(new Date());
+			pack.setUser(u);
+			packService.save(pack);
+			userService.save(u);
+			return new ResponseEntity<Package>(pack, HttpStatus.CREATED);
+		}
+		return new ResponseEntity<Package>(HttpStatus.CONFLICT);
+	}
 
 }

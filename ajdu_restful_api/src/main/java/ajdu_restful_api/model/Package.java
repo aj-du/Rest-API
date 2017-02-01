@@ -37,7 +37,9 @@ public class Package {
 	private List<Service> services;
 	
 	
-	public Package(){}
+	public Package(){
+		this.totalCost = BigDecimal.ZERO;
+	}
 
 
 	public Package(String name, BigDecimal totalCost, Date dateCreated,

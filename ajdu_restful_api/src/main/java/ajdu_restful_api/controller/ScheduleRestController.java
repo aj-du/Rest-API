@@ -17,6 +17,7 @@ import ajdu_restful_api.model.Task;
 import ajdu_restful_api.model.User;
 import ajdu_restful_api.service.ScheduleService;
 import ajdu_restful_api.service.TaskService;
+import ajdu_restful_api.service.TaskStatusService;
 import ajdu_restful_api.service.UserService;
 
 @RestController
@@ -28,6 +29,8 @@ public class ScheduleRestController {
 	UserService userService;
 	@Autowired
 	TaskService taskService;
+	@Autowired
+	TaskStatusService tsService;
 	
 	
 	@RequestMapping(value="/schedules",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -58,7 +61,7 @@ public class ScheduleRestController {
 		return new ResponseEntity<Schedule>(HttpStatus.NOT_FOUND);
 	}
 	
-	@RequestMapping(value="/schedule/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="/schedules/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Schedule> getSchedule(@PathVariable int id) {
 		if(scheduleService.findSchedule(id) != null)
 			return new ResponseEntity<Schedule>(scheduleService.findSchedule(id),HttpStatus.OK);
@@ -66,7 +69,7 @@ public class ScheduleRestController {
 	}
 	
 	@RequestMapping(value="/schedules/{id}",method=RequestMethod.PUT,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE )
-	public ResponseEntity<Schedule> deleteSchedule(@PathVariable int id, @RequestBody Schedule schedule) {
+	public ResponseEntity<Schedule> updateSchedule(@PathVariable int id, @RequestBody Schedule schedule) {
 		Schedule s = scheduleService.findSchedule(id);
 		if(s != null) {
 			s.setUser(schedule.getUser());
@@ -82,6 +85,18 @@ public class ScheduleRestController {
 			return new ResponseEntity<List<Task>>(taskService.findAllTaskBySchedule(id), HttpStatus.OK);
 		else 
 			return new ResponseEntity<List<Task>>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(value="/schedules/{id}/tasks", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Task> addTaskToSchedule(@RequestBody Task task, @PathVariable int id) {
+		Schedule s = scheduleService.findSchedule(id);
+		if(s != null) {
+			task.setSchedule(s);
+			task.setStatus(tsService.findTaskByName("TODO"));
+			taskService.saveTask(task);
+			return new ResponseEntity<Task>(task, HttpStatus.CREATED);
+		}
+		else return new ResponseEntity<Task>(HttpStatus.NOT_FOUND);
 	}
 	
 	
