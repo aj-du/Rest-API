@@ -23,7 +23,7 @@ public class TaskStatusService {
 		return tsRepo.findOne(id);
 	}
 	
-	public TaskStatus findTaskByName(String name) {
+	public TaskStatus findTaskStatusByName(String name) {
 		return tsRepo.findTaskStatusByName(name.toUpperCase());
 	}
 	

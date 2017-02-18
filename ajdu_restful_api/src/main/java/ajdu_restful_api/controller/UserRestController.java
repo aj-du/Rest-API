@@ -1,7 +1,6 @@
 package ajdu_restful_api.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,7 @@ import ajdu_restful_api.model.Schedule;
 import ajdu_restful_api.model.User;
 import ajdu_restful_api.service.PackageService;
 import ajdu_restful_api.service.RoleService;
+import ajdu_restful_api.service.ScheduleService;
 import ajdu_restful_api.service.UserService;
 
 @RestController
@@ -32,6 +32,9 @@ public class UserRestController {
 	private RoleService roleService;
 	@Autowired
 	private PackageService packService;
+	@Autowired
+	private ScheduleService scheduleService;
+	
 	
 	@GetMapping("/hello")
 	public String hello(){
@@ -70,7 +73,7 @@ public class UserRestController {
 		User u = userService.findUser(id);
 		if(u != null) {
 			userService.delete(id);
-			return new ResponseEntity<User>(HttpStatus.OK);
+			return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
@@ -80,17 +83,13 @@ public class UserRestController {
 		User u = userService.findUser(id);
 		if(u != null) {
 			u.setActive(user.isActive());
-			u.setBlog(u.getBlog());
-			u.setComments(user.getComments());
 			u.setEmail(user.getEmail());
 			u.setFirstName(user.getFirstName());
 			u.setLastName(user.getLastName());
 			u.setLogin(user.getLogin());
-			u.setOpinions(user.getOpinions());
-			u.setPack(user.getPack());
 			u.setPassword(user.getPassword());
 			u.setRoles(user.getRoles());
-			u.setSchedule(user.getSchedule());
+			userService.save(u);
 			return new ResponseEntity<User>(u, HttpStatus.OK);
 		}
 		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
@@ -106,23 +105,20 @@ public class UserRestController {
 	@RequestMapping(value="/users/{id}/schedule", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Schedule> getUserSchedule(@PathVariable int id){
 		User u = userService.findUser(id);
-		if(u != null && u.getSchedule() != null) 
-			return new ResponseEntity<Schedule>(u.getSchedule(),HttpStatus.OK);
+		Schedule s = u.getSchedule();
+		if(u != null && s != null) 
+			return new ResponseEntity<Schedule>(s,HttpStatus.OK);
 		else return new ResponseEntity<Schedule>(HttpStatus.NOT_FOUND);
 	}
 	
-	@RequestMapping(value="/users/{id}/package", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Package> setUserPackage(@PathVariable int id, @RequestBody Package pack) {
+	@RequestMapping(value="/users/{id}/package", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Package> getUserPackage(@PathVariable int id){
 		User u = userService.findUser(id);
-		if(u != null && u.getPack() == null) {
-			u.setPack(pack);
-			pack.setDateCreated(new Date());
-			pack.setUser(u);
-			packService.save(pack);
-			userService.save(u);
-			return new ResponseEntity<Package>(pack, HttpStatus.CREATED);
-		}
-		return new ResponseEntity<Package>(HttpStatus.CONFLICT);
+		Package p = u.getPack();
+		if(u != null && p != null) 
+			return new ResponseEntity<Package>(p,HttpStatus.OK);
+		else return new ResponseEntity<Package>(HttpStatus.NOT_FOUND);
 	}
+	
 
 }

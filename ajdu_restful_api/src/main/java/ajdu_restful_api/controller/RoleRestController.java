@@ -43,7 +43,7 @@ public class RoleRestController {
 		if(r != null) 
 			return new ResponseEntity<Role>(r,HttpStatus.OK);
 		else 
-			return new ResponseEntity<Role>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<Role>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value="/roles/{id}",method=RequestMethod.PUT,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -54,6 +54,17 @@ public class RoleRestController {
 			return new ResponseEntity<Role>(r,HttpStatus.OK);
 		}
 		return new ResponseEntity<Role>(HttpStatus.NOT_FOUND);		
+	}
+	
+	@RequestMapping(value="/roles/{id}",method=RequestMethod.DELETE,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Role> deleteRole(@PathVariable int id) {
+		Role r = roleService.findRole(id);
+		if(r != null) {
+			roleService.deleteRole(id);
+			return new ResponseEntity<Role>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Role>(HttpStatus.NOT_FOUND);
+		
 	}
 	
 	

@@ -13,6 +13,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class Service {
 	
@@ -27,6 +30,12 @@ public class Service {
 	
 	@ManyToOne
 	@JoinColumn(name="organization_id")
+	@JsonIgnoreProperties({
+		"login", "password", 
+		"active", "dateCreated",
+		"address","services",
+		"categories"
+		})
 	private Organization organization;
 	
 	@OneToMany(mappedBy="service")
@@ -50,6 +59,8 @@ public class Service {
 	@JoinTable(	name="package_service",
 				joinColumns={@JoinColumn(name="service_id")},
 				inverseJoinColumns={@JoinColumn(name="package_id")}	)
+	/*@JsonIgnoreProperties({"user", "totalCost","services", "dateCreated"})*/
+	@JsonIgnore
 	private List<Package> packages;
 	
 

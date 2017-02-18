@@ -57,7 +57,7 @@ public class OrganizationRestController {
 		Organization org = organizationService.findOneOrg(id);
 		if(org != null) {
 			organizationService.deleteOrg(id);
-			return new ResponseEntity<Organization>(HttpStatus.OK);
+			return new ResponseEntity<Organization>(HttpStatus.NO_CONTENT);
 		}
 		else 
 			return new ResponseEntity<Organization>(HttpStatus.NOT_FOUND);
@@ -75,6 +75,7 @@ public class OrganizationRestController {
 			o.setPassword(org.getPassword());
 			o.setPhoneNumber(org.getPhoneNumber());
 			o.setServices(org.getServices());
+			organizationService.saveOrg(o);
 			return new ResponseEntity<Organization>(o, HttpStatus.OK);
 		}
 		else 

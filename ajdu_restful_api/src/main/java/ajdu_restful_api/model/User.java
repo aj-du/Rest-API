@@ -17,10 +17,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity
+@JsonIgnoreProperties({"password"})
 public class User {
 
 	@Id
@@ -40,15 +41,12 @@ public class User {
 	private List<Role> roles;
 	
 	@OneToOne(mappedBy="user")
-	@JsonIgnore
 	private Package pack;
 
 	@OneToOne(mappedBy="user")
-	@JsonIgnore
 	private Blog blog;
 	
 	@OneToOne(mappedBy="user")
-	@JsonIgnore
 	private Schedule schedule;
 	
 

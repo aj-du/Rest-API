@@ -40,15 +40,18 @@ public class ScheduleRestController {
 	
 	@RequestMapping(value="/schedules",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Schedule> addSchedule(@RequestBody Schedule schedule) {
-		User u = userService.findUser(schedule.getUser().getId());
-		schedule.setUser(u);
-		if(u != null && u.getSchedule() == null) {
-			scheduleService.save(schedule);
-			return new ResponseEntity<Schedule>(schedule,HttpStatus.CREATED);
-		} 
-		else if (u == null) return new ResponseEntity<Schedule>(HttpStatus.NOT_FOUND);
-		else return new ResponseEntity<Schedule>(HttpStatus.CONFLICT);
-		
+		if(schedule.getUser() == null || schedule.getUser().getId() == null) {
+			return new ResponseEntity<Schedule>(HttpStatus.BAD_REQUEST);
+		}
+		else {		
+			User u = userService.findUser(schedule.getUser().getId());
+			if(u.getSchedule() != null)
+				return new ResponseEntity<Schedule>(HttpStatus.CONFLICT);
+			else {			
+				scheduleService.save(schedule);
+				return new ResponseEntity<Schedule>(schedule, HttpStatus.CREATED);
+			}
+		}
 	}
 	
 	@RequestMapping(value="/schedules/{id}",method=RequestMethod.DELETE)
@@ -56,7 +59,7 @@ public class ScheduleRestController {
 		Schedule s = scheduleService.findSchedule(id);
 		if(s != null) {
 			scheduleService.delete(id);
-			return new ResponseEntity<Schedule>(HttpStatus.OK);
+			return new ResponseEntity<Schedule>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<Schedule>(HttpStatus.NOT_FOUND);
 	}
@@ -72,8 +75,8 @@ public class ScheduleRestController {
 	public ResponseEntity<Schedule> updateSchedule(@PathVariable int id, @RequestBody Schedule schedule) {
 		Schedule s = scheduleService.findSchedule(id);
 		if(s != null) {
-			s.setUser(schedule.getUser());
 			s.setTasks(schedule.getTasks());
+			scheduleService.save(s);
 			return new ResponseEntity<Schedule>(s, HttpStatus.OK);
 		}
 		return new ResponseEntity<Schedule>(HttpStatus.NOT_FOUND);
@@ -92,7 +95,7 @@ public class ScheduleRestController {
 		Schedule s = scheduleService.findSchedule(id);
 		if(s != null) {
 			task.setSchedule(s);
-			task.setStatus(tsService.findTaskByName("TODO"));
+			task.setStatus(tsService.findTaskStatusByName("TODO"));
 			taskService.saveTask(task);
 			return new ResponseEntity<Task>(task, HttpStatus.CREATED);
 		}

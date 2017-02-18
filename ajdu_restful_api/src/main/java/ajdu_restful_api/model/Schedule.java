@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class Schedule {
 
@@ -23,6 +25,14 @@ public class Schedule {
 	
 	@OneToOne
 	@JoinColumn(name="user_id")
+	@JsonIgnoreProperties({
+		"pack", "firstName", 
+		"lastName", "password",
+		"email","roles",
+		"blog","schedule",
+		"opinions","comments",
+		"dateCreated"
+		})
 	private User user;
 
 	
