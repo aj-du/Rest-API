@@ -31,6 +31,10 @@ public class ServiceService {
 		return packageService.findPackage(packageId).getServices();
 	}
 	
+	public Service findServiceByName(String name) {
+		return serviceRepository.findServiceByName(name);
+	}
+	
 	public List<Service> findAll(){
 		return (List<Service>)serviceRepository.findAll();
 	}

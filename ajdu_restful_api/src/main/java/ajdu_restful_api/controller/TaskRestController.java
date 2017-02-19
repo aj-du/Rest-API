@@ -46,7 +46,7 @@ public class TaskRestController {
 			taskService.deleteTask(id);
 			return new ResponseEntity<Task>(HttpStatus.OK);
 		}
-		else return new ResponseEntity<Task>(HttpStatus.NOT_FOUND);
+		else return new ResponseEntity<Task>(HttpStatus.NO_CONTENT);
 	}
 	
 	@RequestMapping(value="/tasks/{id}",method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -57,6 +57,7 @@ public class TaskRestController {
 			t.setDescription(task.getDescription());
 			t.setDueDate(task.getDueDate());
 			t.setStatus(task.getStatus());
+			taskService.saveTask(t);
 			return new ResponseEntity<Task>(t, HttpStatus.OK);
 		}
 		else return new ResponseEntity<Task>(HttpStatus.NOT_FOUND);
