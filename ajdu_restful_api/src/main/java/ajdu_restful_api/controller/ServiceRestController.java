@@ -33,7 +33,7 @@ public class ServiceRestController {
 			if(service.getName() == null) {
 				return new ResponseEntity<Service>(HttpStatus.BAD_REQUEST);
 			}
-			else if(service.getName() != null) {
+			else if(service.getName() != null && serviceService.findServiceByName(service.getName()) != null) {
 				return new ResponseEntity<Service>(HttpStatus.CONFLICT);
 			}
 			else {
@@ -55,9 +55,9 @@ public class ServiceRestController {
 	public ResponseEntity<Service> deleteService(@PathVariable int id) {
 		if(serviceService.findService(id) != null) {
 			serviceService.deleteService(id);
-			return new ResponseEntity<Service>(HttpStatus.OK);
+			return new ResponseEntity<Service>(HttpStatus.NO_CONTENT);
 		}
-		else return new ResponseEntity<Service>(HttpStatus.NO_CONTENT);
+		else return new ResponseEntity<Service>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value="/services/{id}",method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)

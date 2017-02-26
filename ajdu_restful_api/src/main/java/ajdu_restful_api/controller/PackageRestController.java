@@ -97,15 +97,38 @@ public class PackageRestController {
 	@RequestMapping(value="/packages/{id}/services", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<Service>> addServiceToPackage(@RequestBody Service service, @PathVariable int id) {
 		Package p = packService.findPackage(id);
-		if(p != null && service.getId() != null) {
+		if(p==null)
+			return new ResponseEntity<List<Service>>(HttpStatus.NOT_FOUND);
+		else if(service.getId() == null)
+			return new ResponseEntity<List<Service>>(HttpStatus.BAD_REQUEST);
+		else {
 			Service s = serviceService.findService(service.getId());
-			if(s != null) {
+			if(s == null)
+				return new ResponseEntity<List<Service>>(HttpStatus.NOT_FOUND);
+			else if(p.getServices().contains(s)){
+				return new ResponseEntity<List<Service>>(HttpStatus.CONFLICT);
+			}
+			else {
 				p.getServices().add(s);
 				packService.save(p);
+				return new ResponseEntity<List<Service>>(p.getServices(), HttpStatus.CREATED);
 			}
-			return new ResponseEntity<List<Service>>(p.getServices(), HttpStatus.CREATED);
+		}		
+	}
+	
+	
+	@RequestMapping(value="/packages/{packageId}/services/{serviceId}",
+			method=RequestMethod.DELETE,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Service> deleteServiceFromPackage(@PathVariable int packageId, @PathVariable int serviceId) {
+		Package p = packService.findPackage(packageId);
+		Service s = serviceService.findService(serviceId);
+		if(p==null || s==null || !p.getServices().contains(s))
+			return new ResponseEntity<Service>(HttpStatus.NOT_FOUND);
+		else {
+			p.getServices().remove(s);
+			packService.save(p);
+			return new ResponseEntity<Service>(HttpStatus.OK);
 		}
-		else return new ResponseEntity<List<Service>>(HttpStatus.NOT_FOUND);
 	}
 	
 	

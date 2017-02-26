@@ -67,6 +67,7 @@ public class OrganizationRestController {
 	public ResponseEntity<Organization> updateOrg(@PathVariable int id, @RequestBody Organization org) {
 		Organization o = organizationService.findOneOrg(id);
 		if(o != null) {
+			o.setName(org.getName());
 			o.setActive(org.isActive());
 			o.setAddress(org.getAddress());
 			o.setCategories(org.getCategories());
@@ -74,7 +75,7 @@ public class OrganizationRestController {
 			o.setLogin(org.getLogin());
 			o.setPassword(org.getPassword());
 			o.setPhoneNumber(org.getPhoneNumber());
-			o.setServices(org.getServices());
+			addressService.saveAddress(o.getAddress());
 			organizationService.saveOrg(o);
 			return new ResponseEntity<Organization>(o, HttpStatus.OK);
 		}

@@ -47,7 +47,7 @@ public class Organization {
 				inverseJoinColumns={@JoinColumn(name="category_id")})
 	private List<Category> categories;
 
-	@OneToMany(mappedBy="organization")
+	@OneToMany(mappedBy="organization", cascade=CascadeType.REMOVE)
 	private List<Service> services;
 	
 	public Organization() {}

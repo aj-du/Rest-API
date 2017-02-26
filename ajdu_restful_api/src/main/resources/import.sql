@@ -44,3 +44,13 @@ insert into organization_category (organization_id,category_id) values (1,1);
 insert into organization_category (organization_id,category_id) values (1,3);
 insert into organization_category (organization_id,category_id) values (1,4);
 insert into organization_category (organization_id,category_id) values (1,12);
+
+insert into service (name, cost, organization_id) values ("pierwsza",1200.00,1);
+insert into service (name, cost, organization_id) values ("druga",1350.00,1);
+insert into service (name, cost, organization_id) values ("trzecia",1050.00,1);
+
+insert into package (name, user_id) values ("Nowy Pakiet", 1);
+
+insert into package_service (package_id, service_id) values (1,1);
+insert into package_service (package_id, service_id) values (1,2);
+insert into package_service (package_id, service_id) values (1,3);

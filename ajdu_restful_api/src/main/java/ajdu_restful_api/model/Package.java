@@ -15,6 +15,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Formula;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -24,6 +26,7 @@ public class Package {
 	@GeneratedValue
 	private Integer id;
 	private String name;
+	@Formula(value = "(select sum(s.cost) from service s where s.organization_id = id)")
 	private BigDecimal totalCost;
 	
 	@Temporal(TemporalType.TIMESTAMP)
