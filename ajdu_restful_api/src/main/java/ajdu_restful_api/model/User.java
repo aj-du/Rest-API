@@ -17,26 +17,29 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity
 @JsonIgnoreProperties({"password"})
-public class User {
+public class User extends Person {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	private String firstName;
-	private String lastName;
+	@NotNull
 	private String login;
+	@NotNull
 	private String password;
+	@NotNull
 	private String email;
+
 	
-	@Enumerated(EnumType.STRING)
-	private Gender gender;	
+	@OneToOne(mappedBy="user")
+	private Partner partner;
 	
 	@ElementCollection(targetClass=Role.class)
 	@Enumerated(EnumType.STRING)
@@ -72,16 +75,35 @@ public class User {
 	
 	public User() {}
 
-	public User(String firstName, String lastName, String login,
+	public User(String firstName, String lastName, Gender gender, String login,
 			String password, String email, Date dateCreated) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
+		super(firstName,lastName, gender);
 		this.login = login;
 		this.password = password;
 		this.email = email;
 		this.dateCreated = dateCreated;
 		this.roles = new ArrayList<Role>();
+	}
+
+	public User(String firstName, String lastName, String login,
+			String password, String email, Gender gender, Partner partner,
+			List<Role> roles, Package pack, Blog blog, Schedule schedule,
+			Image profileImage, boolean active, Date dateCreated,
+			List<Opinion> opinions, List<Comment> comments) {
+		super(firstName,lastName,gender);
+		this.login = login;
+		this.password = password;
+		this.email = email;
+		this.partner = partner;
+		this.roles = roles;
+		this.pack = pack;
+		this.blog = blog;
+		this.schedule = schedule;
+		this.profileImage = profileImage;
+		this.active = active;
+		this.dateCreated = dateCreated;
+		this.opinions = opinions;
+		this.comments = comments;
 	}
 
 	public Integer getId() {
@@ -90,22 +112,6 @@ public class User {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	public String getLogin() {
@@ -198,15 +204,6 @@ public class User {
 	}
 	
 
-	public Gender getGender() {
-		return gender;
-	}
-
-	public void setGender(Gender gender) {
-		this.gender = gender;
-	}
-	
-
 	public Image getProfileImage() {
 		return profileImage;
 	}
@@ -214,15 +211,26 @@ public class User {
 	public void setProfileImage(Image profileImage) {
 		this.profileImage = profileImage;
 	}
+	
+
+	public Partner getPartner() {
+		return partner;
+	}
+
+	public void setPartner(Partner partner) {
+		this.partner = partner;
+	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", login=" + login + ", password=" + password
-				+ ", email=" + email + ", roles=" + roles + ", active="
+		return "User [id=" + id + ", login=" + login + ", password=" + password
+				+ ", email=" + email + ", partner=" + partner + ", roles="
+				+ roles + ", pack=" + pack + ", blog=" + blog + ", schedule="
+				+ schedule + ", profileImage=" + profileImage + ", active="
 				+ active + ", dateCreated=" + dateCreated + ", opinions="
-				+ opinions + "]";
+				+ opinions + ", comments=" + comments + "]";
 	}
+
 	
 	
 
