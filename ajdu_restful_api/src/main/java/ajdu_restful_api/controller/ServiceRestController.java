@@ -66,7 +66,7 @@ public class ServiceRestController {
 		if(s != null) {
 			s.setName(service.getName());
 			s.setDescription(service.getDescription());
-			s.setCategory(service.getCategory());
+			s.setCategories(service.getCategories());
 			s.setCost(service.getCost());
 			s.setDistinct(service.isDistinct());
 			s.setOpinions(service.getOpinions());

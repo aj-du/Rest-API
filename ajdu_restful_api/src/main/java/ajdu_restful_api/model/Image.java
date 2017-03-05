@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Image {
@@ -18,18 +19,37 @@ public class Image {
 	@ManyToOne
 	@JoinColumn(name="service_id")
 	private Service service;
+	
+	@OneToOne
+	@JoinColumn(name="blog_id")
+	private Blog blog;
+	
+	@OneToOne
+	@JoinColumn(name="post_id")
+	private Post post;
+	
+	@OneToOne
+	@JoinColumn(name="user_id")
+	private User user;
 
 	public Image() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Image(String title, String fileURL, Service service) {
+
+	public Image(String title, String fileURL, Service service, Blog blog,
+			Post post, User user) {
 		super();
 		this.title = title;
 		this.fileURL = fileURL;
 		this.service = service;
+		this.blog = blog;
+		this.post = post;
+		this.user = user;
 	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -63,12 +83,53 @@ public class Image {
 		this.service = service;
 	}
 
+
+	public String getFileURL() {
+		return fileURL;
+	}
+
+
+	public void setFileURL(String fileURL) {
+		this.fileURL = fileURL;
+	}
+
+
+	public Blog getBlog() {
+		return blog;
+	}
+
+
+	public void setBlog(Blog blog) {
+		this.blog = blog;
+	}
+
+
+	public Post getPost() {
+		return post;
+	}
+
+
+	public void setPost(Post post) {
+		this.post = post;
+	}
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Movie [id=" + id + ", title=" + title + ", file=" + fileURL
-				+ ", service=" + service + "]";
+		return "Image [id=" + id + ", title=" + title + ", fileURL=" + fileURL
+				+ ", service=" + service + ", blog=" + blog + ", post=" + post
+				+ ", user=" + user + "]";
 	}
-	
 	
 	
 }

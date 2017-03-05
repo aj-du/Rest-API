@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ajdu_restful_api.model.Organization;
 import ajdu_restful_api.service.AddressService;
-import ajdu_restful_api.service.CategoryService;
 import ajdu_restful_api.service.OrganizationService;
 
 @RestController
@@ -24,8 +23,6 @@ public class OrganizationRestController {
 	private OrganizationService organizationService;
 	@Autowired
 	private AddressService addressService;
-	@Autowired
-	private CategoryService categoryService;
 	
 	@RequestMapping(value="/orgs",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<Organization>> getAllOrgs() {
@@ -70,7 +67,6 @@ public class OrganizationRestController {
 			o.setName(org.getName());
 			o.setActive(org.isActive());
 			o.setAddress(org.getAddress());
-			o.setCategories(org.getCategories());
 			o.setEmail(org.getEmail());
 			o.setLogin(org.getLogin());
 			o.setPassword(org.getPassword());

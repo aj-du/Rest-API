@@ -31,17 +31,23 @@ public class Blog {
 	@OneToMany(mappedBy="blog")
 	private List<Post> posts;
 	
+	@OneToOne(mappedBy="blog")
+	private Image image;
+	
 	public Blog(){}
 
 	public Blog(String title, String description, Date dateCreated, User user,
-			List<Post> posts) {
+			List<Post> posts, Image image) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.dateCreated = dateCreated;
 		this.user = user;
 		this.posts = posts;
+		this.image = image;
 	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -90,13 +96,24 @@ public class Blog {
 	public void setPosts(List<Post> posts) {
 		this.posts = posts;
 	}
+	
+	
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
 
 	@Override
 	public String toString() {
 		return "Blog [id=" + id + ", title=" + title + ", description="
 				+ description + ", dateCreated=" + dateCreated + ", user="
-				+ user + ", posts=" + posts + "]";
+				+ user + ", posts=" + posts + ", image=" + image + "]";
 	}
+
+
 	
 	
 }

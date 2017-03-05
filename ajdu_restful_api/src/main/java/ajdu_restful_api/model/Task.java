@@ -3,6 +3,8 @@ package ajdu_restful_api.model;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -30,8 +32,7 @@ public class Task {
 	@JoinColumn(name="schedule_id")
 	private Schedule schedule;
 	
-	@ManyToOne
-	@JoinColumn(name="status_id")
+	@Enumerated(EnumType.STRING)
 	private TaskStatus status;
 	
 	

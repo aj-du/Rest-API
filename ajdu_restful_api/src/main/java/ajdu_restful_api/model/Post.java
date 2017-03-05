@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -28,20 +29,27 @@ public class Post {
 	@JoinColumn(name="blog_id")
 	private Blog blog;
 	
+	@OneToOne(mappedBy="post")
+	private Image image;
+	
 	@OneToMany(mappedBy="post")
 	private List<Comment> comments;
 	
 	public Post(){}
 
+
 	public Post(String title, String content, Date dateCreated, Blog blog,
-			List<Comment> comments) {
+			Image image, List<Comment> comments) {
 		super();
 		this.title = title;
 		this.content = content;
 		this.dateCreated = dateCreated;
 		this.blog = blog;
+		this.image = image;
 		this.comments = comments;
 	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -90,13 +98,28 @@ public class Post {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
+	
+	
+
+	public Image getImage() {
+		return image;
+	}
+
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
 
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", title=" + title + ", content=" + content
 				+ ", dateCreated=" + dateCreated + ", blog=" + blog
-				+ ", comments=" + comments + "]";
+				+ ", image=" + image + ", comments=" + comments + "]";
 	}
+
+
+
 	
 	
 	

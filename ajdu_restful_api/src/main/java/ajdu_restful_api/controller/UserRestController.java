@@ -19,7 +19,6 @@ import ajdu_restful_api.model.Role;
 import ajdu_restful_api.model.Schedule;
 import ajdu_restful_api.model.User;
 import ajdu_restful_api.service.PackageService;
-import ajdu_restful_api.service.RoleService;
 import ajdu_restful_api.service.ScheduleService;
 import ajdu_restful_api.service.UserService;
 
@@ -28,8 +27,6 @@ public class UserRestController {
 
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private RoleService roleService;
 	@Autowired
 	private PackageService packService;
 	@Autowired
@@ -49,10 +46,11 @@ public class UserRestController {
 	@RequestMapping(value="/users", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<User> addUser(@RequestBody User user) {
 		if(userService.findUserByLogin(user.getLogin()) == null) {
-			if(user.getRoles() == null) 
-				user.setRoles(new ArrayList<Role>());
-			user.getRoles().add(roleService.findRole(2));
-			
+			if(user.getRoles() == null || user.getRoles().isEmpty()) {
+				List<Role> roles = new ArrayList<Role>();
+				roles.add(Role.REG_USER);
+				user.setRoles(roles);
+			}
 			userService.save(user);
 			return new ResponseEntity<User>(user, HttpStatus.CREATED);
 		}

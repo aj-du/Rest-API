@@ -3,8 +3,12 @@ package ajdu_restful_api.model;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -44,13 +48,11 @@ public class Service {
 	@OneToMany(mappedBy="service")
 	private List<Image> image;
 	
-	@ManyToMany
-	@JoinTable(
-				name="service_category",
-				joinColumns={@JoinColumn(name="service_id")},
-				inverseJoinColumns={@JoinColumn(name="category_id")}
-				)
-	private List<Category> category;
+	@ElementCollection(targetClass=Category.class)
+	@Enumerated(EnumType.STRING)
+	@CollectionTable(name="service_category")
+	@Column(name="category")
+	private List<Category> categories;
 	
 	@OneToMany(mappedBy="service")
 	private List<Opinion> opinions;
@@ -72,7 +74,7 @@ public class Service {
 
 	public Service(String name, String description, BigDecimal cost,
 			boolean isDistinct, Organization organization, List<Movie> movie,
-			List<Image> image, List<Category> category, List<Opinion> opinions) {
+			List<Image> image, List<Category> categories, List<Opinion> opinions) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -81,7 +83,7 @@ public class Service {
 		this.organization = organization;
 		this.movie = movie;
 		this.image = image;
-		this.category = category;
+		this.categories = categories;
 		this.opinions = opinions;
 	}
 
@@ -166,13 +168,13 @@ public class Service {
 	}
 
 
-	public List<Category> getCategory() {
-		return category;
+	public List<Category> getCategories() {
+		return categories;
 	}
 
 
-	public void setCategory(List<Category> category) {
-		this.category = category;
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
 	}
 
 
@@ -202,7 +204,7 @@ public class Service {
 		return "Service [id=" + id + ", name=" + name + ", description="
 				+ description + ", cost=" + cost + ", isDistinct=" + isDistinct
 				+ ", organization=" + organization + ", movie=" + movie
-				+ ", image=" + image + ", category=" + category + ", opinions="
+				+ ", image=" + image + ", categories=" + categories + ", opinions="
 				+ opinions + "]";
 	}
 

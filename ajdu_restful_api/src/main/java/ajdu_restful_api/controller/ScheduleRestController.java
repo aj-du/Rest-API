@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ajdu_restful_api.model.Schedule;
 import ajdu_restful_api.model.Task;
+import ajdu_restful_api.model.TaskStatus;
 import ajdu_restful_api.model.User;
 import ajdu_restful_api.service.ScheduleService;
 import ajdu_restful_api.service.TaskService;
-import ajdu_restful_api.service.TaskStatusService;
 import ajdu_restful_api.service.UserService;
 
 @RestController
@@ -29,8 +29,6 @@ public class ScheduleRestController {
 	UserService userService;
 	@Autowired
 	TaskService taskService;
-	@Autowired
-	TaskStatusService tsService;
 	
 	
 	@RequestMapping(value="/schedules",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -95,7 +93,7 @@ public class ScheduleRestController {
 		Schedule s = scheduleService.findSchedule(id);
 		if(s != null) {
 			task.setSchedule(s);
-			task.setStatus(tsService.findTaskStatusByName("TODO"));
+			task.setStatus(TaskStatus.TODO);
 			taskService.saveTask(task);
 			return new ResponseEntity<Task>(task, HttpStatus.CREATED);
 		}
