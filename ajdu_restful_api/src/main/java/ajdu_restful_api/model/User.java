@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -13,11 +14,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -29,16 +31,25 @@ public class User extends Person {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
+		
+	@ManyToOne(cascade={CascadeType.ALL})
+	@JoinColumn(name="main_user_id")
+	@JsonIgnoreProperties({"mainUser", "login","password","email","partner","roles","schedule","profileImage","blog",
+		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers"})
+	private User mainUser;
 	
-	@NotNull
+	@OneToMany(mappedBy="mainUser")
+	@JsonIgnoreProperties({"mainUser", "login","password","email","partner","roles","schedule","profileImage","blog",
+		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers"})
+	private List<User> permittedUsers = new ArrayList<User>();
+	
 	private String login;
-	@NotNull
 	private String password;
-	@NotNull
 	private String email;
 
-	
-	@OneToOne(mappedBy="user")
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="partner_id")
+	@JsonIgnoreProperties({"user"})
 	private Partner partner;
 	
 	@ElementCollection(targetClass=Role.class)
@@ -47,18 +58,17 @@ public class User extends Person {
 	@Column(name="role")
 	private List<Role> roles;
 	
-	@OneToOne(mappedBy="user")
+	@OneToOne(mappedBy="user", cascade=CascadeType.REMOVE)
 	private Package pack;
 
 	@OneToOne(mappedBy="user")
 	private Blog blog;
 	
-	@OneToOne(mappedBy="user")
+	@OneToOne(mappedBy="user", cascade=CascadeType.REMOVE)
 	private Schedule schedule;
 	
-	@OneToOne(mappedBy="user")
-	private Image profileImage;
-	
+	@OneToOne(mappedBy="user", cascade=CascadeType.REMOVE)
+	private Image profileImage;	
 
 	@Column(columnDefinition="boolean default false")
 	private boolean active;
@@ -72,6 +82,8 @@ public class User extends Person {
 	
 	@OneToMany(mappedBy="user")
 	private List<Comment> comments;
+
+	
 	
 	public User() {}
 
@@ -221,6 +233,23 @@ public class User extends Person {
 		this.partner = partner;
 	}
 
+
+	public User getMainUser() {
+		return mainUser;
+	}
+
+	public void setMainUser(User mainUser) {
+		this.mainUser = mainUser;
+	}
+
+	public List<User> getPermittedUsers() {
+		return permittedUsers;
+	}
+
+	public void setPermittedUsers(List<User> permittedUsers) {
+		this.permittedUsers = permittedUsers;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", login=" + login + ", password=" + password
@@ -230,6 +259,9 @@ public class User extends Person {
 				+ active + ", dateCreated=" + dateCreated + ", opinions="
 				+ opinions + ", comments=" + comments + "]";
 	}
+	
+
+
 
 	
 	

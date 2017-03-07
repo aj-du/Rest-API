@@ -19,6 +19,7 @@ import ajdu_restful_api.model.Role;
 import ajdu_restful_api.model.Schedule;
 import ajdu_restful_api.model.User;
 import ajdu_restful_api.service.PackageService;
+import ajdu_restful_api.service.PartnerService;
 import ajdu_restful_api.service.ScheduleService;
 import ajdu_restful_api.service.UserService;
 
@@ -29,6 +30,8 @@ public class UserRestController {
 	private UserService userService;
 	@Autowired
 	private PackageService packService;
+	@Autowired
+	private PartnerService partnerService;
 	@Autowired
 	private ScheduleService scheduleService;
 	
@@ -46,16 +49,40 @@ public class UserRestController {
 	@RequestMapping(value="/users", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<User> addUser(@RequestBody User user) {
 		if(userService.findUserByLogin(user.getLogin()) == null) {
+			
 			if(user.getRoles() == null || user.getRoles().isEmpty()) {
 				List<Role> roles = new ArrayList<Role>();
 				roles.add(Role.REG_USER);
 				user.setRoles(roles);
 			}
-			userService.save(user);
+		
+			partnerService.save(user.getPartner());
+			userService.save(user);	
 			return new ResponseEntity<User>(user, HttpStatus.CREATED);
 		}
 		else return new ResponseEntity<User>(HttpStatus.CONFLICT);
 	}
+	
+	@RequestMapping(value="/users/{userId}/permitted-users", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<User> addPermittedUser(@PathVariable int userId, @RequestBody User user) {
+		User u = userService.findUser(userId);
+		User permUser = userService.findUser(user.getId());
+		if(u != null && permUser != null){
+			permUser.setMainUser(u);
+			userService.save(permUser);
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		}
+		else return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(value="/users/{userId}/permitted-users", method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<User>> getPermittedUser(@PathVariable int userId) {
+		User u = userService.findUser(userId);
+		if(u!=null && u.getPermittedUsers()!=null && !u.getPermittedUsers().isEmpty()) return new ResponseEntity<List<User>>(u.getPermittedUsers(), HttpStatus.OK);
+		else return new ResponseEntity<List<User>>(HttpStatus.NOT_FOUND);
+	}
+	
+	
 	
 	@RequestMapping(value="/users/{id}",method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<User> findOneUser(@PathVariable int id){
