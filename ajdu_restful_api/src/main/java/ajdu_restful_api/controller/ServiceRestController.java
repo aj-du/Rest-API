@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ajdu_restful_api.model.Service;
@@ -40,6 +41,11 @@ public class ServiceRestController {
 				serviceService.saveService(service);
 				return new ResponseEntity<Service>(service,HttpStatus.CREATED);
 			}
+	}
+	
+	@RequestMapping(value="/services/by/categories", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<Service>> getServicesByCategories(@RequestParam List<Integer> catIds) {
+		return new ResponseEntity<List<Service>>(serviceService.findByCategoryId(catIds), HttpStatus.OK);
 	}
 	
 	

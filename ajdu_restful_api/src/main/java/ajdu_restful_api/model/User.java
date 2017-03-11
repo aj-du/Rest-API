@@ -15,7 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -32,13 +33,20 @@ public class User extends Person {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 		
-	@ManyToOne(cascade={CascadeType.ALL})
-	@JoinColumn(name="main_user_id")
+	@ManyToMany
+	@JoinTable(	name="main_user_permitted_user",
+		joinColumns={@JoinColumn(name="permitted_user_id")},
+		inverseJoinColumns={@JoinColumn(name="main_user_id")}	
+	)
 	@JsonIgnoreProperties({"mainUser", "login","password","email","partner","roles","schedule","profileImage","blog",
 		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers"})
-	private User mainUser;
+	private List<User> mainUsers;
 	
-	@OneToMany(mappedBy="mainUser")
+	@ManyToMany
+	@JoinTable(	name="main_user_permitted_user",
+		joinColumns={@JoinColumn(name="main_user_id")},
+		inverseJoinColumns={@JoinColumn(name="permitted_user_id")}	
+	)
 	@JsonIgnoreProperties({"mainUser", "login","password","email","partner","roles","schedule","profileImage","blog",
 		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers"})
 	private List<User> permittedUsers = new ArrayList<User>();
@@ -234,12 +242,12 @@ public class User extends Person {
 	}
 
 
-	public User getMainUser() {
-		return mainUser;
+	public List<User> getMainUsers() {
+		return mainUsers;
 	}
 
-	public void setMainUser(User mainUser) {
-		this.mainUser = mainUser;
+	public void setMainUser(List<User> mainUsers) {
+		this.mainUsers = mainUsers;
 	}
 
 	public List<User> getPermittedUsers() {

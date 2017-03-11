@@ -47,4 +47,8 @@ public class ServiceService {
 		serviceRepository.delete(id);
 	}
 	
+	public List<Service> findByCategoryId(List<Integer> catIds) {
+		return (List<Service>)serviceRepository.findDistinctByCategoriesIdIn(catIds);
+	}
+	
 }

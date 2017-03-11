@@ -68,7 +68,7 @@ public class UserRestController {
 		User u = userService.findUser(userId);
 		User permUser = userService.findUser(user.getId());
 		if(u != null && permUser != null){
-			permUser.setMainUser(u);
+			permUser.getMainUsers().add(u);
 			userService.save(permUser);
 			return new ResponseEntity<User>(user, HttpStatus.OK);
 		}
