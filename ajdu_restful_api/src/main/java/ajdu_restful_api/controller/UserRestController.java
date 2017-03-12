@@ -66,8 +66,16 @@ public class UserRestController {
 	@RequestMapping(value="/users/{userId}/permitted-users", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<User> addPermittedUser(@PathVariable int userId, @RequestBody User user) {
 		User u = userService.findUser(userId);
-		User permUser = userService.findUser(user.getId());
-		if(u != null && permUser != null){
+		if(u != null && user.getId() != null){
+			User permUser = userService.findUser(user.getId());
+			if(u.getId() == null || permUser.getId() == null || permUser.getId() == u.getId())
+				return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+			
+			for(User us : u.getPermittedUsers()) {
+				if(us.getId() == permUser.getId())
+					return new ResponseEntity<User>(HttpStatus.CONFLICT);
+			}
+			
 			permUser.getMainUsers().add(u);
 			userService.save(permUser);
 			return new ResponseEntity<User>(user, HttpStatus.OK);

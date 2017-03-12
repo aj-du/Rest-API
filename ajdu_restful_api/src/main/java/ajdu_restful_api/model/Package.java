@@ -41,7 +41,9 @@ public class Package {
 		"email","roles",
 		"blog","schedule",
 		"opinions","comments",
-		"dateCreated"
+		"dateCreated", "gender",
+		"mainUsers", "permittedUsers",
+		"profileImage", "active"
 		})
 	private User user;
 	

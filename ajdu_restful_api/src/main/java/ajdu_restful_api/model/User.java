@@ -39,7 +39,7 @@ public class User extends Person {
 		inverseJoinColumns={@JoinColumn(name="main_user_id")}	
 	)
 	@JsonIgnoreProperties({"mainUser", "login","password","email","partner","roles","schedule","profileImage","blog",
-		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers"})
+		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers", "mainUsers"})
 	private List<User> mainUsers;
 	
 	@ManyToMany

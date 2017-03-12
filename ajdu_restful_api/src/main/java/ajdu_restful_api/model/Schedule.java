@@ -31,7 +31,10 @@ public class Schedule {
 		"email","roles",
 		"blog","schedule",
 		"opinions","comments",
-		"dateCreated"
+		"dateCreated", "profileImage",
+		"mainUsers", "permittedUsers",
+		"partner", "profileImage", "active",
+		"gender"
 		})
 	private User user;
 

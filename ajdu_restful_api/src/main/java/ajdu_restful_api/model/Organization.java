@@ -9,13 +9,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Entity
+@JsonIgnoreProperties({"password"})
 public class Organization {
 	
 	@Id
@@ -38,16 +43,17 @@ public class Organization {
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="address_id")
 	private Address address;
-	
-	
-/*	@Enumerated(EnumType.STRING)
-	@ElementCollection(targetClass=Category.class)
-	@Formula(value="(select distinct service_category.category from service_category "
-			+ "left join service on service_category.service_id=service.id "
-			+ "left join organization on service.organization_id=organization.id)")
-	private List<Category> categories;*/
+		
+	@ManyToMany
+	@JoinTable(
+				name="organization_category",
+				joinColumns={@JoinColumn(name="organization_id")},
+				inverseJoinColumns={@JoinColumn(name="category_id")}
+				)
+	private List<Category> categories;
 
 	@OneToMany(mappedBy="organization", cascade=CascadeType.REMOVE)
+	@JsonIgnoreProperties({"organization"})
 	private List<Service> services;
 	
 	public Organization() {}
@@ -130,13 +136,13 @@ public class Organization {
 		this.address = address;
 	}
 
-	/*public List<Category> getCategories() {
+	public List<Category> getCategories() {
 		return categories;
 	}
 
 	public void setCategories(List<Category> categories) {
 		this.categories = categories;
-	}*/
+	}
 	
 
 	public List<Service> getServices() {

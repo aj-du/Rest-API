@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ajdu_restful_api.model.Category;
+import ajdu_restful_api.model.Organization;
 import ajdu_restful_api.model.Service;
+import ajdu_restful_api.service.OrganizationService;
 import ajdu_restful_api.service.ServiceService;
 
 @RestController
@@ -21,6 +24,8 @@ public class ServiceRestController {
 	
 	@Autowired
 	ServiceService serviceService;
+	@Autowired
+	OrganizationService orgService;
 	
 		
 	@RequestMapping(value="/services",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -31,13 +36,23 @@ public class ServiceRestController {
 	
 	@RequestMapping(value="/services",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Service> addService(@RequestBody Service service) {
-			if(service.getName() == null) {
+			if(service.getName() == null || 
+					service.getOrganization() == null || 
+					service.getOrganization().getId() == null) 
 				return new ResponseEntity<Service>(HttpStatus.BAD_REQUEST);
-			}
-			else if(service.getName() != null && serviceService.findServiceByName(service.getName()) != null) {
-				return new ResponseEntity<Service>(HttpStatus.CONFLICT);
-			}
+			else if(orgService.findOneOrg(service.getOrganization().getId()) == null)
+				return new ResponseEntity<Service>(HttpStatus.NOT_FOUND);
 			else {
+				Organization org = orgService.findOneOrg(service.getOrganization().getId());
+				List<Service> servicesOfOrg = org.getServices();
+				for(Service s: servicesOfOrg) {
+					if(service.getName().equals(s.getName()))
+						return new ResponseEntity<Service>(HttpStatus.CONFLICT);
+				}
+				for(Category cat : service.getCategories()) {
+					// TODO: add each category to organization.categories
+				}
+				orgService.saveOrg(org);
 				serviceService.saveService(service);
 				return new ResponseEntity<Service>(service,HttpStatus.CREATED);
 			}
