@@ -18,10 +18,6 @@ insert into address (city, country, line1, line2, postal_code, region) values ("
 
 insert into organization (name,login,password,email,address_id) values ("Sala Weselna \"Olimp\"","olimp_gda","salaweslna123a","olimp_gdansk@firma.pl",1);
 
-insert into service (name, cost, organization_id) values ("pierwsza",1200.00,1);
-insert into service (name, cost, organization_id) values ("druga",1350.00,1);
-insert into service (name, cost, organization_id) values ("trzecia",1050.00,1);
-
 insert into category (name) values ("Sala weselna");
 insert into category (name) values ("Zespół");
 insert into category (name) values ("Catering");
@@ -38,12 +34,21 @@ insert into category (name) values ("Transport");
 insert into category (name) values ("Odzież");
 insert into category (name) values ("Atrakcje dodatkowe");
 
+insert into service (name, cost, organization_id) values ("pierwsza",1200.00,1);
+insert into service (name, cost, organization_id) values ("druga",1350.00,1);
+insert into service (name, cost, organization_id) values ("trzecia",1050.00,1);
+
 insert into service_category (service_id, category_id) values (3,1);
 insert into service_category (service_id, category_id) values (3,4);
 insert into service_category (service_id, category_id) values (2,4);
 insert into service_category (service_id, category_id) values (1,3);
 insert into service_category (service_id, category_id) values (1,2);
 insert into service_category (service_id, category_id) values (1,1);
+
+insert into organization_category (organization_id, category_id) values (1,1);
+insert into organization_category (organization_id, category_id) values (1,2);
+insert into organization_category (organization_id, category_id) values (1,3);
+insert into organization_category (organization_id, category_id) values (1,4);
 
 insert into package (name, user_id) values ("Nowy Pakiet", 1);
 

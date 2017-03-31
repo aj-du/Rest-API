@@ -28,6 +28,10 @@ public class OrganizationService {
 		return orgs;
 	}
 	
+	public List<Organization> findByCategoryId(List<Integer> catIds) {
+		return (List<Organization>)organizationRepository.findDistinctByCategoriesIdIn(catIds);
+	}
+	
 	public Organization findOneOrg(int id) {
 		return organizationRepository.findOne(id);
 	}

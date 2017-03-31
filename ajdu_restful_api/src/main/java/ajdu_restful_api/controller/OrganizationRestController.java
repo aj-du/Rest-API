@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ajdu_restful_api.model.Organization;
+import ajdu_restful_api.model.Service;
 import ajdu_restful_api.service.AddressService;
 import ajdu_restful_api.service.OrganizationService;
 
@@ -38,6 +40,11 @@ public class OrganizationRestController {
 			return new ResponseEntity<Organization>(org,HttpStatus.CREATED);
 		}
 		return new ResponseEntity<Organization>(HttpStatus.CONFLICT);
+	}
+	
+	@RequestMapping(value="/orgs/by/categories", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<Organization>> getOrgsByCategories(@RequestParam List<Integer> catIds) {
+		return new ResponseEntity<List<Organization>>(organizationService.findByCategoryId(catIds), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/orgs/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
