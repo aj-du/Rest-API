@@ -48,7 +48,7 @@ public class User extends Person {
 		inverseJoinColumns={@JoinColumn(name="permitted_user_id")}	
 	)
 	@JsonIgnoreProperties({"mainUser", "login","password","email","partner","roles","schedule","profileImage","blog",
-		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers"})
+		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers", "mainUsers"})
 	private List<User> permittedUsers = new ArrayList<User>();
 	
 	private String login;
@@ -90,6 +90,16 @@ public class User extends Person {
 	
 	@OneToMany(mappedBy="user")
 	private List<Comment> comments;
+	
+	@JsonIgnoreProperties({"user"})
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="marriage_id")
+	private Marriage marriage;
+	
+	@JsonIgnoreProperties({"user"})
+	@OneToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="wedding_id")
+	private Wedding wedding;
 
 	
 	

@@ -1,5 +1,6 @@
 package ajdu_restful_api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ajdu_restful_api.model.Category;
 import ajdu_restful_api.model.Organization;
 import ajdu_restful_api.model.Service;
+import ajdu_restful_api.service.CategoryService;
 import ajdu_restful_api.service.OrganizationService;
 import ajdu_restful_api.service.ServiceService;
 
@@ -26,6 +28,8 @@ public class ServiceRestController {
 	ServiceService serviceService;
 	@Autowired
 	OrganizationService orgService;
+	@Autowired
+	CategoryService categoryService;
 	
 		
 	@RequestMapping(value="/services",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -36,22 +40,37 @@ public class ServiceRestController {
 	
 	@RequestMapping(value="/services",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Service> addService(@RequestBody Service service) {
+		
+		// checking if request is valid
 			if(service.getName() == null || 
 					service.getOrganization() == null || 
 					service.getOrganization().getId() == null) 
 				return new ResponseEntity<Service>(HttpStatus.BAD_REQUEST);
+		
+		// checking if organization exists
 			else if(orgService.findOneOrg(service.getOrganization().getId()) == null)
 				return new ResponseEntity<Service>(HttpStatus.NOT_FOUND);
 			else {
 				Organization org = orgService.findOneOrg(service.getOrganization().getId());
+				
+			// checking if there is a service already existing for this organization with given name
 				List<Service> servicesOfOrg = org.getServices();
 				for(Service s: servicesOfOrg) {
 					if(service.getName().equals(s.getName()))
 						return new ResponseEntity<Service>(HttpStatus.CONFLICT);
 				}
+			
+			// aligning organization object with the categories from service
+				List<Integer> categoriesOfOrg = new ArrayList<Integer>();
+				for(Category orgCat : org.getCategories())
+					categoriesOfOrg.add(orgCat.getId());
+				
 				for(Category cat : service.getCategories()) {
-					// TODO: add each category to organization.categories
+					if(!categoriesOfOrg.contains(cat.getId()))
+							org.getCategories().add(categoryService.findOneCategory(cat.getId()));
 				}
+				
+			// saving state after changes
 				orgService.saveOrg(org);
 				serviceService.saveService(service);
 				return new ResponseEntity<Service>(service,HttpStatus.CREATED);
