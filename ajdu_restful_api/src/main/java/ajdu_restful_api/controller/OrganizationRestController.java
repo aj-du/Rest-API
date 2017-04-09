@@ -56,6 +56,17 @@ public class OrganizationRestController {
 			return new ResponseEntity<Organization>(HttpStatus.NOT_FOUND);
 	}	
 	
+	
+	@RequestMapping(value="/orgs/{id}/services",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<Service>> getOrgsServices(@PathVariable int id) {
+		Organization org = organizationService.findOneOrg(id);
+		if(org != null)
+			return new ResponseEntity<List<Service>>(org.getServices(),HttpStatus.OK);
+		else 
+			return new ResponseEntity<List<Service>>(HttpStatus.NOT_FOUND);
+	}	
+	
+	
 	@RequestMapping(value="/orgs/{id}",method=RequestMethod.DELETE)
 	public ResponseEntity<Organization> deleteOrg(@PathVariable int id) {
 		Organization org = organizationService.findOneOrg(id);

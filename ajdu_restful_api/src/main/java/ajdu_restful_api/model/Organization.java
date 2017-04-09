@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity
-@JsonIgnoreProperties({"password"})
+@JsonIgnoreProperties({"password", "services"})
 public class Organization {
 	
 	@Id

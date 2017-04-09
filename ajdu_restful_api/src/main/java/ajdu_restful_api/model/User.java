@@ -39,7 +39,8 @@ public class User extends Person {
 		inverseJoinColumns={@JoinColumn(name="main_user_id")}	
 	)
 	@JsonIgnoreProperties({"mainUser", "login","password","email","partner","roles","schedule","profileImage","blog",
-		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers", "mainUsers"})
+		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers", "mainUsers","marriage",
+		"wedding"})
 	private List<User> mainUsers;
 	
 	@ManyToMany
@@ -48,7 +49,8 @@ public class User extends Person {
 		inverseJoinColumns={@JoinColumn(name="permitted_user_id")}	
 	)
 	@JsonIgnoreProperties({"mainUser", "login","password","email","partner","roles","schedule","profileImage","blog",
-		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers", "mainUsers"})
+		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers", "mainUsers", "marriage",
+		"wedding"})
 	private List<User> permittedUsers = new ArrayList<User>();
 	
 	private String login;
@@ -266,6 +268,26 @@ public class User extends Person {
 
 	public void setPermittedUsers(List<User> permittedUsers) {
 		this.permittedUsers = permittedUsers;
+	}
+
+	public Marriage getMarriage() {
+		return marriage;
+	}
+
+	public void setMarriage(Marriage marriage) {
+		this.marriage = marriage;
+	}
+
+	public Wedding getWedding() {
+		return wedding;
+	}
+
+	public void setWedding(Wedding wedding) {
+		this.wedding = wedding;
+	}
+
+	public void setMainUsers(List<User> mainUsers) {
+		this.mainUsers = mainUsers;
 	}
 
 	@Override
