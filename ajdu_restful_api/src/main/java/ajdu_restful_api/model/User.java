@@ -93,6 +93,9 @@ public class User extends Person {
 	@OneToMany(mappedBy="user")
 	private List<Comment> comments;
 	
+	@OneToMany(mappedBy="user")
+	private List<TodoTask> todoTasks;
+	
 	@JsonIgnoreProperties({"user"})
 	@OneToOne(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="marriage_id")

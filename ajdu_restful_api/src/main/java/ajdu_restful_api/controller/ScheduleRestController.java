@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ajdu_restful_api.model.Schedule;
-import ajdu_restful_api.model.Task;
+import ajdu_restful_api.model.CalendarTask;
 import ajdu_restful_api.model.TaskStatus;
 import ajdu_restful_api.model.User;
 import ajdu_restful_api.service.ScheduleService;
-import ajdu_restful_api.service.TaskService;
+import ajdu_restful_api.service.CalendarTaskService;
 import ajdu_restful_api.service.UserService;
 
 @RestController
@@ -28,7 +28,7 @@ public class ScheduleRestController {
 	@Autowired
 	UserService userService;
 	@Autowired
-	TaskService taskService;
+	CalendarTaskService taskService;
 	
 	
 	@RequestMapping(value="/schedules",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -81,23 +81,23 @@ public class ScheduleRestController {
 	}
 	
 	@RequestMapping(value="/schedules/{id}/tasks",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<List<Task>> findAllTasksBySchedule(@PathVariable int id){
+	public ResponseEntity<List<CalendarTask>> findAllTasksBySchedule(@PathVariable int id){
 		if(scheduleService.findSchedule(id) != null) 
-			return new ResponseEntity<List<Task>>(taskService.findAllTaskBySchedule(id), HttpStatus.OK);
+			return new ResponseEntity<List<CalendarTask>>(taskService.findAllTaskBySchedule(id), HttpStatus.OK);
 		else 
-			return new ResponseEntity<List<Task>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<CalendarTask>>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value="/schedules/{id}/tasks", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Task> addTaskToSchedule(@RequestBody Task task, @PathVariable int id) {
+	public ResponseEntity<CalendarTask> addTaskToSchedule(@RequestBody CalendarTask task, @PathVariable int id) {
 		Schedule s = scheduleService.findSchedule(id);
 		if(s != null) {
 			task.setSchedule(s);
 			task.setStatus(TaskStatus.TODO);
 			taskService.saveTask(task);
-			return new ResponseEntity<Task>(task, HttpStatus.CREATED);
+			return new ResponseEntity<CalendarTask>(task, HttpStatus.CREATED);
 		}
-		else return new ResponseEntity<Task>(HttpStatus.NOT_FOUND);
+		else return new ResponseEntity<CalendarTask>(HttpStatus.NOT_FOUND);
 	}
 	
 	

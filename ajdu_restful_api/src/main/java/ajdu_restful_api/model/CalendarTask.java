@@ -15,17 +15,19 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Task {
+public class CalendarTask extends GenericTask {
 
 	@Id
 	@GeneratedValue
 	private Integer id;
 	
-	private String name;
-	private String description;
+	@Temporal(TemporalType.DATE)
+	private Calendar date;
 	
 	@Temporal(TemporalType.DATE)
 	private Calendar dueDate;
+	
+	private String location;
 	
 	@JsonIgnore
 	@ManyToOne
@@ -36,12 +38,11 @@ public class Task {
 	private TaskStatus status;
 	
 	
-	public Task(){}
+	public CalendarTask() {}
 
 
-	public Task(String name, Schedule schedule) {
-		super();
-		this.name = name;
+	public CalendarTask(String name, String desc, Schedule schedule) {
+		super(name, desc, TaskStatus.TODO);
 		this.schedule = schedule;
 	}
 
@@ -53,26 +54,6 @@ public class Task {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-
-	public String getDescription() {
-		return description;
-	}
-
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 
@@ -106,11 +87,31 @@ public class Task {
 	}
 
 
+	public Calendar getDate() {
+		return date;
+	}
+
+
+	public void setDate(Calendar date) {
+		this.date = date;
+	}
+
+
+	public String getLocation() {
+		return location;
+	}
+
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Task [id=" + id + ", name=" + name + ", description="
-				+ description + ", dueDate=" + dueDate + ", schedule="
-				+ schedule + ", status=" + status + "]";
+		return "Task [id=" + id + ", name=" + ", description="
+				+ ", dueDate=" + dueDate + ", schedule="
+				+ schedule + ", status=" + status + super.toString() + "]";
 	}
 	
 	

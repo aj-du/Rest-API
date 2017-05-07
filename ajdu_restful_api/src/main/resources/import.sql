@@ -8,8 +8,11 @@ insert into user_role (user_id,role) values (2,"REG_USER");
 
 insert into schedule (user_id) values (1);
 
-insert into task (name, description, schedule_id,status, due_date) values ("Zrobić inżynierkę", "Napisać i obronić aplikację AJDU",1,"TODO",date("2017-06-30"))
-insert into task (name, description, schedule_id,status, due_date) values ("Zaliczyć semestr", "Pozaliczać wszystkie inne przedmioty",1,"TODO", date("2017-02-14"))
+insert into calendar_task (name, description, schedule_id,status, date, due_date, location) values ("Fryzjer", "Umówić się na porównanie kolorów",1,"TODO", date("2017-06-04"), date("2017-06-30"), "Gdańsk - Fryzjer Trendy")
+insert into calendar_task (name, description, schedule_id,status, date, location) values ("Oglądanie sali", "Obejrzeć salę weselną",1,"TODO", date("2017-02-14"), "Luzino")
+
+insert into todo_task (name, description, status) values ("Sala weselna", "Poszukać z mężem sali", "INPROGRESS");
+insert into todo_task (name, description, status) values ("Kupić alkohol", "", "DONE");
 
 
 

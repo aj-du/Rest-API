@@ -2,8 +2,8 @@ package ajdu_restful_api.dao;
 
 import org.springframework.data.repository.CrudRepository;
 
-import ajdu_restful_api.model.Task;
+import ajdu_restful_api.model.CalendarTask;
 
-public interface TaskRepository extends CrudRepository<Task, Integer>{
+public interface CalendarTaskRepository extends CrudRepository<CalendarTask, Integer>{
 
 }

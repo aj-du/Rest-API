@@ -13,59 +13,59 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ajdu_restful_api.model.Schedule;
-import ajdu_restful_api.model.Task;
+import ajdu_restful_api.model.CalendarTask;
 import ajdu_restful_api.service.ScheduleService;
-import ajdu_restful_api.service.TaskService;
+import ajdu_restful_api.service.CalendarTaskService;
 
 @RestController
 public class TaskRestController {
 	
 	@Autowired
-	TaskService taskService;
+	CalendarTaskService taskService;
 	
 	@Autowired
 	ScheduleService scheduleService;
 		
 	@RequestMapping(value="/tasks",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<List<Task>> getAllTask() {
-			return new ResponseEntity<List<Task>>(taskService.findAll(),HttpStatus.OK);
+	public ResponseEntity<List<CalendarTask>> getAllTask() {
+			return new ResponseEntity<List<CalendarTask>>(taskService.findAll(),HttpStatus.OK);
 	}
 	
 	
 	@RequestMapping(value="/tasks/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Task> getTask(@PathVariable int id) {
+	public ResponseEntity<CalendarTask> getTask(@PathVariable int id) {
 		if(taskService.findTask(id) != null)
-			return new ResponseEntity<Task>(taskService.findTask(id),HttpStatus.OK);
-		else return new ResponseEntity<Task>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<CalendarTask>(taskService.findTask(id),HttpStatus.OK);
+		else return new ResponseEntity<CalendarTask>(HttpStatus.NOT_FOUND);
 	}
 	
 	
 	@RequestMapping(value="/tasks/{id}",method=RequestMethod.DELETE)
-	public ResponseEntity<Task> deleteTask(@PathVariable int id) {
+	public ResponseEntity<CalendarTask> deleteTask(@PathVariable int id) {
 		if(taskService.findTask(id) != null) {
 			taskService.deleteTask(id);
-			return new ResponseEntity<Task>(HttpStatus.OK);
+			return new ResponseEntity<CalendarTask>(HttpStatus.OK);
 		}
-		else return new ResponseEntity<Task>(HttpStatus.NO_CONTENT);
+		else return new ResponseEntity<CalendarTask>(HttpStatus.NO_CONTENT);
 	}
 	
 	@RequestMapping(value="/tasks/{id}",method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Task> updateTask(@PathVariable int id, @RequestBody Task task) {
-		Task t = taskService.findTask(id);
+	public ResponseEntity<CalendarTask> updateTask(@PathVariable int id, @RequestBody CalendarTask task) {
+		CalendarTask t = taskService.findTask(id);
 		if(t != null) {
 			t.setName(task.getName());
 			t.setDescription(task.getDescription());
 			t.setDueDate(task.getDueDate());
 			t.setStatus(task.getStatus());
 			taskService.saveTask(t);
-			return new ResponseEntity<Task>(t, HttpStatus.OK);
+			return new ResponseEntity<CalendarTask>(t, HttpStatus.OK);
 		}
-		else return new ResponseEntity<Task>(HttpStatus.NOT_FOUND);
+		else return new ResponseEntity<CalendarTask>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value="/tasks/{id}/schedule",method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Schedule> getTaskSchedule(@PathVariable int id){
-		Task t = taskService.findTask(id);
+		CalendarTask t = taskService.findTask(id);
 		if(t != null && t.getSchedule() != null) 
 			return new ResponseEntity<Schedule>(t.getSchedule(),HttpStatus.OK);
 		else return new ResponseEntity<Schedule>(HttpStatus.NOT_FOUND);

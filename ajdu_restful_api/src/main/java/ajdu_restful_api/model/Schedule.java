@@ -21,7 +21,7 @@ public class Schedule {
 	private Integer id;
 	
 	@OneToMany(mappedBy="schedule", cascade=CascadeType.REMOVE)
-	private List<Task> tasks;
+	private List<CalendarTask> tasks;
 	
 	@OneToOne
 	@JoinColumn(name="user_id")
@@ -40,9 +40,9 @@ public class Schedule {
 
 	
 	public Schedule(){
-		this.tasks = new ArrayList<Task>();
+		this.tasks = new ArrayList<CalendarTask>();
 	};
-	public Schedule(List<Task> tasks, User user) {
+	public Schedule(List<CalendarTask> tasks, User user) {
 		super();
 		this.tasks = tasks;
 		this.user = user;
@@ -56,11 +56,11 @@ public class Schedule {
 		this.id = id;
 	}
 
-	public List<Task> getTasks() {
+	public List<CalendarTask> getTasks() {
 		return tasks;
 	}
 
-	public void setTasks(List<Task> tasks) {
+	public void setTasks(List<CalendarTask> tasks) {
 		this.tasks = tasks;
 	}
 
