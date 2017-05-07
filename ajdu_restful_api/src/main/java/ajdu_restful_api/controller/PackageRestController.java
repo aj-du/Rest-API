@@ -1,5 +1,6 @@
 package ajdu_restful_api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,9 +65,13 @@ public class PackageRestController {
 	public ResponseEntity<Package> updatePackage(@PathVariable int id, @RequestBody Package pack) {
 		Package p = packService.findPackage(id);
 		if(p != null) {
-			p.setName(pack.getName());
-			p.setServices(pack.getServices());
-			p.setTotalCost(pack.getTotalCost());
+			List<Service> services = new ArrayList<Service>();
+			for(Service serv: pack.getServices()) {
+				if(serv.getId() != null && serviceService.findService(serv.getId()) != null)
+					services.add(serviceService.findService(serv.getId()));
+				else return new ResponseEntity<Package>(HttpStatus.BAD_REQUEST);
+			}
+			p.setServices(services);
 			packService.save(p);
 			return new ResponseEntity<Package>(p, HttpStatus.OK);
 		}

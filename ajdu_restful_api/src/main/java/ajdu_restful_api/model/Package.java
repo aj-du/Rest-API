@@ -25,7 +25,7 @@ public class Package {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	private String name;
+	
 	@Formula(value = "(select sum(s.cost) from service s where s.organization_id = id)")
 	private BigDecimal totalCost;
 	
@@ -43,7 +43,8 @@ public class Package {
 		"opinions","comments",
 		"dateCreated", "gender",
 		"mainUsers", "permittedUsers",
-		"profileImage", "active"
+		"profileImage", "active", "partner",
+		"marriage", "wedding"
 		})
 	private User user;
 	
@@ -51,6 +52,10 @@ public class Package {
 	@JoinTable(	name="package_service",
 				joinColumns={@JoinColumn(name="package_id")},
 				inverseJoinColumns={@JoinColumn(name="service_id")}	)
+	@JsonIgnoreProperties({
+		"organization", "description", "movie", "image", "categories", 
+		"opinions", "distinct"
+	})
 	private List<Service> services;
 	
 	
@@ -59,10 +64,9 @@ public class Package {
 	}
 
 
-	public Package(String name, BigDecimal totalCost, Date dateCreated,
+	public Package(BigDecimal totalCost, Date dateCreated,
 			User user, List<Service> services) {
 		super();
-		this.name = name;
 		this.totalCost = totalCost;
 		this.dateCreated = dateCreated;
 		this.user = user;
@@ -80,16 +84,7 @@ public class Package {
 	}
 
 
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-
+	
 	public BigDecimal getTotalCost() {
 		return totalCost;
 	}
@@ -134,7 +129,7 @@ public class Package {
 
 	@Override
 	public String toString() {
-		return "Package [id=" + id + ", name=" + name + ", totalCost="
+		return "Package [id=" + id + ", totalCost="
 				+ totalCost + ", dateCreated=" + dateCreated + ", user=" + user
 				+ ", services=" + services + "]";
 	}
