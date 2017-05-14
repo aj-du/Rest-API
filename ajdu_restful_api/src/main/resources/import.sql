@@ -11,9 +11,53 @@ insert into schedule (user_id) values (1);
 insert into calendar_task (name, description, schedule_id,status, date, due_date, location) values ("Fryzjer", "Umówić się na porównanie kolorów",1,"TODO", date("2017-06-04"), date("2017-06-30"), "Gdańsk - Fryzjer Trendy")
 insert into calendar_task (name, description, schedule_id,status, date, location) values ("Oglądanie sali", "Obejrzeć salę weselną",1,"TODO", date("2017-02-14"), "Luzino")
 
-insert into todo_task (name, description, status) values ("Sala weselna", "Poszukać z mężem sali", "INPROGRESS");
-insert into todo_task (name, description, status) values ("Kupić alkohol", "", "DONE");
-
+insert into todo_task (name, description, status) values ("Sala weselna", "", "TODO");
+insert into todo_task (name, description, status) values ("Wizyta w parafii", "", "TODO");
+insert into todo_task (name, description, status) values ("Wizyta w USC", "", "TODO");
+insert into todo_task (name, description, status) values ("Oprawa muzyczna wesela", "", "TODO");
+insert into todo_task (name, description, status) values ("Fotograf", "", "TODO");
+insert into todo_task (name, description, status) values ("Kamerzysta", "", "TODO");
+insert into todo_task (name, description, status) values ("Wybór świadków", "", "TODO");
+insert into todo_task (name, description, status) values ("Ustalenie listy gości", "", "TODO");
+insert into todo_task (name, description, status) values ("Zaplanowanie urlopów w pracy", "", "TODO");
+insert into todo_task (name, description, status) values ("Zaplanowanie podróży poślubnej", "", "TODO");
+insert into todo_task (name, description, status) values ("Menu: jedzenie", "", "TODO");
+insert into todo_task (name, description, status) values ("Menu: napoje", "", "TODO");
+insert into todo_task (name, description, status) values ("Menu: ciasta", "", "TODO");
+insert into todo_task (name, description, status) values ("Menu: tort", "", "TODO");
+insert into todo_task (name, description, status) values ("Menu: napoje wysokoprocentowe", "", "TODO");
+insert into todo_task (name, description, status) values ("Dekoracja: sala weselna", "", "TODO");
+insert into todo_task (name, description, status) values ("Dekoracja: samochód", "", "TODO");
+insert into todo_task (name, description, status) values ("Dekoracja: kościół", "", "TODO");
+insert into todo_task (name, description, status) values ("Dekoracja: dom rodzinny", "", "TODO");
+insert into todo_task (name, description, status) values ("Winietki", "", "TODO");
+insert into todo_task (name, description, status) values ("Karty menu", "", "TODO");
+insert into todo_task (name, description, status) values ("Strój Pana Młodego: garnitur", "", "TODO");
+insert into todo_task (name, description, status) values ("Strój Pana Młodego: koszule", "", "TODO");
+insert into todo_task (name, description, status) values ("Strój Pana Młodego: buty", "", "TODO");
+insert into todo_task (name, description, status) values ("Strój Pana Młodego: krawat/mucha", "", "TODO");
+insert into todo_task (name, description, status) values ("Strój Panny Młodej: suknia ślubna", "", "TODO");
+insert into todo_task (name, description, status) values ("Strój Panny Młodej: sukienka", "", "TODO");
+insert into todo_task (name, description, status) values ("Strój Panny Młodej: welon", "", "TODO");
+insert into todo_task (name, description, status) values ("Strój Panny Młodej: dodatki", "", "TODO");
+insert into todo_task (name, description, status) values ("Strój Panny Młodej: biżuteria", "", "TODO");
+insert into todo_task (name, description, status) values ("Strój Panny Młodej: buty", "", "TODO");
+insert into todo_task (name, description, status) values ("Strój Panny Młodej: bielizna", "", "TODO");
+insert into todo_task (name, description, status) values ("Kwiaty: wiązanka Panny Młodej", "", "TODO");
+insert into todo_task (name, description, status) values ("Kwiaty: wiązanki dla rodziców", "", "TODO");
+insert into todo_task (name, description, status) values ("Kwiaty: kwiaty do butonierki", "", "TODO");
+insert into todo_task (name, description, status) values ("Samochód lub inny pojazd dla Pary Młodej", "", "TODO");
+insert into todo_task (name, description, status) values ("Zakup obrączek", "", "TODO");
+insert into todo_task (name, description, status) values ("Nauka tańca", "", "TODO");
+insert into todo_task (name, description, status) values ("Fryzjer Panny Młodej", "", "TODO");
+insert into todo_task (name, description, status) values ("Fryzjer Pana Młodego", "", "TODO");
+insert into todo_task (name, description, status) values ("Kosmetyczka: makijaż", "", "TODO");
+insert into todo_task (name, description, status) values ("Kosmetyczka: manicure", "", "TODO");
+insert into todo_task (name, description, status) values ("Wieczór kawalerski", "", "TODO");
+insert into todo_task (name, description, status) values ("Wieczór panieński", "", "TODO");
+insert into todo_task (name, description, status) values ("Dodatkowe atrakcje", "", "TODO");
+insert into todo_task (name, description, status) values ("Podziękowania dla gości", "", "TODO");
+insert into todo_task (name, description, status) values ("Księga pamiątkowa", "", "TODO");
 
 
 insert into address (city, country, line1, line2, postal_code, region) values ("Gdansk", "PL","Sala Weselna \"Olimp\"","Kartuska 123","80-012","pomorskie");

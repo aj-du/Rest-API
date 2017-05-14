@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class TodoTask extends GenericTask {
 	
@@ -19,6 +21,17 @@ public class TodoTask extends GenericTask {
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
+	@JsonIgnoreProperties({
+		"pack", "firstName", 
+		"lastName", "password",
+		"email","roles",
+		"blog","schedule",
+		"opinions","comments",
+		"dateCreated", "gender",
+		"mainUsers", "permittedUsers",
+		"profileImage", "active", "partner",
+		"marriage", "wedding", "todoTasks"
+		})
 	private User user;	
 	
 	

@@ -18,7 +18,7 @@ import ajdu_restful_api.service.ScheduleService;
 import ajdu_restful_api.service.CalendarTaskService;
 
 @RestController
-public class TaskRestController {
+public class CalendarTaskRestController {
 	
 	@Autowired
 	CalendarTaskService taskService;
@@ -44,9 +44,9 @@ public class TaskRestController {
 	public ResponseEntity<CalendarTask> deleteTask(@PathVariable int id) {
 		if(taskService.findTask(id) != null) {
 			taskService.deleteTask(id);
-			return new ResponseEntity<CalendarTask>(HttpStatus.OK);
+			return new ResponseEntity<CalendarTask>(HttpStatus.NO_CONTENT);
 		}
-		else return new ResponseEntity<CalendarTask>(HttpStatus.NO_CONTENT);
+		else return new ResponseEntity<CalendarTask>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value="/tasks/{id}",method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)

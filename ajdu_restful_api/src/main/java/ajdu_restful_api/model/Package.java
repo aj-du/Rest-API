@@ -44,7 +44,7 @@ public class Package {
 		"dateCreated", "gender",
 		"mainUsers", "permittedUsers",
 		"profileImage", "active", "partner",
-		"marriage", "wedding"
+		"marriage", "wedding", "todoTasks"
 		})
 	private User user;
 	

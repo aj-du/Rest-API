@@ -68,12 +68,15 @@ public class User extends Person {
 	@Column(name="role")
 	private List<Role> roles;
 	
+	@JsonIgnoreProperties({"user"})
 	@OneToOne(mappedBy="user", cascade=CascadeType.REMOVE)
 	private Package pack;
 
+	@JsonIgnoreProperties({"user"})
 	@OneToOne(mappedBy="user")
 	private Blog blog;
 	
+	@JsonIgnoreProperties({"user"})
 	@OneToOne(mappedBy="user", cascade=CascadeType.REMOVE)
 	private Schedule schedule;
 	
@@ -93,6 +96,7 @@ public class User extends Person {
 	@OneToMany(mappedBy="user")
 	private List<Comment> comments;
 	
+	@JsonIgnoreProperties({"user"})
 	@OneToMany(mappedBy="user")
 	private List<TodoTask> todoTasks;
 	
@@ -291,6 +295,15 @@ public class User extends Person {
 
 	public void setMainUsers(List<User> mainUsers) {
 		this.mainUsers = mainUsers;
+	}
+	
+
+	public List<TodoTask> getTodoTasks() {
+		return todoTasks;
+	}
+
+	public void setTodoTasks(List<TodoTask> todoTasks) {
+		this.todoTasks = todoTasks;
 	}
 
 	@Override
