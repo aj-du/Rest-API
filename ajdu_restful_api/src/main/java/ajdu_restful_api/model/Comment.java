@@ -2,6 +2,7 @@ package ajdu_restful_api.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Comment {
@@ -19,14 +22,30 @@ public class Comment {
 	private String content;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP")
 	private Date dateCreated;
 	
 	@ManyToOne
 	@JoinColumn(name="post_id")
+	@JsonIgnoreProperties({
+		"blog","coments", "image", 
+		"dateCreated", "content", "comments"
+	})
 	private Post post;
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
+	@JsonIgnoreProperties({
+		"pack", "firstName", 
+		"lastName", "password",
+		"email","roles",
+		"blog","schedule",
+		"opinions","comments",
+		"dateCreated", "gender",
+		"mainUsers", "permittedUsers",
+		"profileImage", "active", "partner",
+		"marriage", "wedding", "todoTasks"
+		})
 	private User user;
 	
 	public Comment(){}

@@ -45,7 +45,10 @@ public class Blog {
 	private User user;
 	
 	@OneToMany(mappedBy="blog")
-	@JsonIgnoreProperties({"blog","coments", "image", "dateCreated", "content", "comments"})
+	@JsonIgnoreProperties({
+		"blog","coments", "image", 
+		"dateCreated", "content", "comments"
+	})
 	private List<Post> posts;
 	
 	@OneToOne(mappedBy="blog")
