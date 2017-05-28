@@ -38,9 +38,15 @@ public class User extends Person {
 		joinColumns={@JoinColumn(name="permitted_user_id")},
 		inverseJoinColumns={@JoinColumn(name="main_user_id")}	
 	)
-	@JsonIgnoreProperties({"mainUser", "login","password","email","partner","roles","schedule","profileImage","blog",
-		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers", "mainUsers","marriage",
-		"wedding"})
+	@JsonIgnoreProperties({
+		"mainUser", "login","password",
+		"email","partner","roles",
+		"schedule","profileImage","blog",
+		"pack","dateCreated","opinions",
+		"comments", "active", "gender", 
+		"permittedUsers", "mainUsers","marriage",
+		"wedding"
+	})
 	private List<User> mainUsers;
 	
 	@ManyToMany
@@ -48,9 +54,15 @@ public class User extends Person {
 		joinColumns={@JoinColumn(name="main_user_id")},
 		inverseJoinColumns={@JoinColumn(name="permitted_user_id")}	
 	)
-	@JsonIgnoreProperties({"mainUser", "login","password","email","partner","roles","schedule","profileImage","blog",
-		"pack","dateCreated","opinions","comments", "active", "gender", "permittedUsers", "mainUsers", "marriage",
-		"wedding"})
+	@JsonIgnoreProperties({
+		"mainUser", "login","password",
+		"email","partner","roles",
+		"schedule","profileImage","blog",
+		"pack","dateCreated","opinions",
+		"comments", "active", "gender",
+		"permittedUsers", "mainUsers", "marriage",
+		"wedding"
+	})
 	private List<User> permittedUsers = new ArrayList<User>();
 	
 	private String login;
@@ -72,11 +84,14 @@ public class User extends Person {
 	@OneToOne(mappedBy="user", cascade=CascadeType.REMOVE)
 	private Package pack;
 
-	@JsonIgnoreProperties({"user"})
+	@JsonIgnoreProperties({
+		"user", "title", "description",
+		"dateCreated", "posts", "image"
+	})
 	@OneToOne(mappedBy="user")
 	private Blog blog;
 	
-	@JsonIgnoreProperties({"user"})
+	@JsonIgnoreProperties({"user", "tasks"})
 	@OneToOne(mappedBy="user", cascade=CascadeType.REMOVE)
 	private Schedule schedule;
 	

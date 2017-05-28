@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ajdu_restful_api.dao.CalendarTaskRepository;
 import ajdu_restful_api.model.CalendarTask;
+import ajdu_restful_api.model.Schedule;
 
 @Service
 @Transactional
@@ -26,6 +27,10 @@ public class CalendarTaskService {
 	
 	public CalendarTask findTask(int id) {
 		return taskRepository.findOne(id);
+	}
+	
+	public List<CalendarTask> findTaskBySchedule(Schedule schedule) {
+		return (List<CalendarTask>) taskRepository.findTasksBySchedule(schedule);
 	}
 	
 	public List<CalendarTask> findAll(){

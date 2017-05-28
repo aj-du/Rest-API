@@ -3,6 +3,7 @@ package ajdu_restful_api.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,6 +14,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class Post {
 
@@ -20,19 +23,27 @@ public class Post {
 	@GeneratedValue
 	private Integer id;
 	private String title;
+	@Column(columnDefinition="LONGTEXT")
 	private String content;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP")
 	private Date dateCreated;
 	
 	@ManyToOne
 	@JoinColumn(name="blog_id")
+	@JsonIgnoreProperties({
+		"title", "description",
+		"dateCreated", "user",
+		"posts", "image"
+	})
 	private Blog blog;
 	
 	@OneToOne(mappedBy="post")
 	private Image image;
 	
 	@OneToMany(mappedBy="post")
+	@JsonIgnoreProperties({"post", "user"})
 	private List<Comment> comments;
 	
 	public Post(){}
