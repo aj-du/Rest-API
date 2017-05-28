@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ajdu_restful_api.model.Comment;
 import ajdu_restful_api.model.Post;
+import ajdu_restful_api.model.User;
 import ajdu_restful_api.service.CommentService;
 import ajdu_restful_api.service.PostService;
+import ajdu_restful_api.service.UserService;
 
 @RestController
 public class CommentController {
@@ -25,12 +27,26 @@ public class CommentController {
 	CommentService commentService;
 	@Autowired
 	PostService postService;
+	@Autowired
+	UserService userService;
 		
 	@RequestMapping(value="/comments",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<Comment>> getAllComment() {
 			return new ResponseEntity<List<Comment>>(commentService.findAll(),HttpStatus.OK);
 	}
 	
+	@RequestMapping(value="/comments",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
+		Post post = postService.findPost(comment.getPost().getId());
+		User user = userService.findUser(comment.getUser().getId());
+		if(post != null && user != null) {
+			post.getComments().add(comment);
+			commentService.saveComment(comment);
+			postService.savePost(post);
+			return new ResponseEntity<Comment>(comment, HttpStatus.CREATED);
+		}
+		return new ResponseEntity<Comment>(comment, HttpStatus.BAD_REQUEST);
+	}
 	
 	@RequestMapping(value="/comments/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Comment> getComment(@PathVariable int id) {

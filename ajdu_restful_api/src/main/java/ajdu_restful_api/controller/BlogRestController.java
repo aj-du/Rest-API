@@ -34,7 +34,7 @@ public class BlogRestController {
 		return new ResponseEntity<List<Blog>>(blogService.findBlogs(),HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/blogs",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="/blogs",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Blog> createBlog(@RequestBody Blog blog) {
 		if(blog.getUser() == null || 
 				blog.getUser().getId() == null ||

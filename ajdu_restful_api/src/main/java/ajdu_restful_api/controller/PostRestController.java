@@ -19,7 +19,7 @@ import ajdu_restful_api.service.BlogService;
 import ajdu_restful_api.service.PostService;
 
 @RestController
-public class PostController {
+public class PostRestController {
 	
 	@Autowired
 	PostService postService;
@@ -31,11 +31,24 @@ public class PostController {
 			return new ResponseEntity<List<Post>>(postService.findAll(),HttpStatus.OK);
 	}
 	
+	@RequestMapping(value="/posts",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Post> createPost(@RequestBody Post post) {
+		Blog blog = blogService.findBlog(post.getBlog().getId());
+		if(blog != null) {
+			blog.getPosts().add(post);
+			postService.savePost(post);
+			blogService.save(blog);
+			return new ResponseEntity<Post>(post, HttpStatus.CREATED);
+		}
+		return new ResponseEntity<Post>(post, HttpStatus.BAD_REQUEST);
+	}
+	
 	
 	@RequestMapping(value="/posts/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Post> getPost(@PathVariable int id) {
-		if(postService.findPost(id) != null)
-			return new ResponseEntity<Post>(postService.findPost(id),HttpStatus.OK);
+		Post post = postService.findPost(id);
+		if(post != null)
+			return new ResponseEntity<Post>(post,HttpStatus.OK);
 		else return new ResponseEntity<Post>(HttpStatus.NOT_FOUND);
 	}
 	
