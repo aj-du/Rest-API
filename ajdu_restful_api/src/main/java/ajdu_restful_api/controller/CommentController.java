@@ -37,13 +37,24 @@ public class CommentController {
 	
 	@RequestMapping(value="/comments",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
-		Post post = postService.findPost(comment.getPost().getId());
-		User user = userService.findUser(comment.getUser().getId());
-		if(post != null && user != null) {
-			post.getComments().add(comment);
-			commentService.saveComment(comment);
-			postService.savePost(post);
-			return new ResponseEntity<Comment>(comment, HttpStatus.CREATED);
+		if(comment.getPost() != null && 
+				comment.getPost().getId() != null &&
+				comment.getUser() != null &&
+				comment.getUser().getId() != null) {
+			
+			Post post = postService.findPost(comment.getPost().getId());
+			User user = userService.findUser(comment.getUser().getId());
+			
+			if(user != null && post != null) {
+				user.getComments().add(comment);
+				post.getComments().add(comment);
+				commentService.saveComment(comment);
+				postService.savePost(post);
+				userService.save(user);
+				return new ResponseEntity<Comment>(comment, HttpStatus.CREATED);
+			} 
+			else
+				return new ResponseEntity<Comment>(comment, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Comment>(comment, HttpStatus.BAD_REQUEST);
 	}

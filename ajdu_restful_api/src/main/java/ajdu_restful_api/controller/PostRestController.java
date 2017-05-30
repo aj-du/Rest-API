@@ -33,12 +33,17 @@ public class PostRestController {
 	
 	@RequestMapping(value="/posts",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Post> createPost(@RequestBody Post post) {
-		Blog blog = blogService.findBlog(post.getBlog().getId());
-		if(blog != null) {
-			blog.getPosts().add(post);
-			postService.savePost(post);
-			blogService.save(blog);
-			return new ResponseEntity<Post>(post, HttpStatus.CREATED);
+		if(post.getBlog() != null &&
+				post.getBlog().getId() != null &&
+				post.getTitle() != null) {
+			Blog blog = blogService.findBlog(post.getBlog().getId());
+			if(blog != null) {
+				blog.getPosts().add(post);
+				postService.savePost(post);
+				blogService.save(blog);
+				return new ResponseEntity<Post>(post, HttpStatus.CREATED);				
+			}
+			else return new ResponseEntity<Post>(post, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Post>(post, HttpStatus.BAD_REQUEST);
 	}
