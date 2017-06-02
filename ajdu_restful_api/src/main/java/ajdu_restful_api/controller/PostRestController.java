@@ -74,7 +74,7 @@ public class PostRestController {
 		if(p != null) {
 			p.setTitle(post.getTitle());
 			p.setContent(post.getContent());
-			p.setImage(post.getImage());
+			p.setMedia(post.getMedia());
 			p.setComments(post.getComments());
 			postService.savePost(p);
 			return new ResponseEntity<Post>(p, HttpStatus.OK);

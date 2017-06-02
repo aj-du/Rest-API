@@ -22,6 +22,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ajdu_restful_api.config.GlobalProperties;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -96,13 +99,17 @@ public class User extends Person {
 	private Schedule schedule;
 	
 	@OneToOne(mappedBy="user", cascade=CascadeType.REMOVE)
-	private Image profileImage;	
+	@JsonIgnoreProperties({
+		"blog","post","user","service"
+	})
+	private Media profileImage;	
 
 	@Column(columnDefinition="boolean default false")
 	private boolean active;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern=GlobalProperties.DATETIME_PATTERN)
 	private Date dateCreated;
 	
 	@OneToMany(mappedBy="user")
@@ -150,7 +157,7 @@ public class User extends Person {
 	public User(String firstName, String lastName, String login,
 			String password, String email, Gender gender, Partner partner,
 			List<Role> roles, Package pack, Blog blog, Schedule schedule,
-			Image profileImage, boolean active, Date dateCreated,
+			Media profileImage, boolean active, Date dateCreated,
 			List<Opinion> opinions, List<Comment> comments) {
 		super(firstName,lastName,gender);
 		this.login = login;
@@ -266,11 +273,11 @@ public class User extends Person {
 	}
 	
 
-	public Image getProfileImage() {
+	public Media getProfileImage() {
 		return profileImage;
 	}
 
-	public void setProfileImage(Image profileImage) {
+	public void setProfileImage(Media profileImage) {
 		this.profileImage = profileImage;
 	}
 	

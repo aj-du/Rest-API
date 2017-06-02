@@ -16,6 +16,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ajdu_restful_api.config.GlobalProperties;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -38,6 +41,7 @@ public class Organization {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern=GlobalProperties.DATETIME_PATTERN)
 	private Date dateCreated;
 	
 	@OneToOne(cascade=CascadeType.REMOVE)

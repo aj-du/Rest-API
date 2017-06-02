@@ -1,10 +1,9 @@
-insert into user (first_name,last_name,email,login,password) values ("Artur","Borkowski","s12020@pjwstk.edu.pl","s12020","Haslo1234")
-insert into user (first_name,last_name,email,login,password) values ("Zbychu","Kowalski","z.kowal@o2.pl","zkow","128dahh1jhg2")
+insert into user (first_name,last_name,gender,email,login,password) values ("Artur","Borkowski","M","s12020@pjwstk.edu.pl","s12020","Haslo1234")
+insert into user (first_name,last_name,gender,email,login,password) values ("Zbychu","Kowalski","M","z.kowal@o2.pl","zkow","128dahh1jhg2")
 
 insert into user_role (user_id,role) values (1,"ADMIN");
 insert into user_role (user_id,role) values (1,"REG_USER");
 insert into user_role (user_id,role) values (2,"REG_USER");
-
 
 insert into schedule (user_id) values (1);
 
@@ -121,3 +120,5 @@ insert into comment(content,user_id,post_id) values("Wiecie może kiedy będą n
 insert into comment(content,user_id,post_id) values("Nieźle Zbychu! ", 1, 2);
 insert into comment(content,user_id,post_id) values("A dzięki dzięki :D", 2, 2);
 insert into comment(content,user_id,post_id) values("Oj tam, taka tradycja. Co ludzie powiedzą.", 1, 3);
+
+insert into media (fileurl, media_type, title, user_id) values ("./dummy/images/profile.jpg", "IMAGE", "Profilowe", 1);

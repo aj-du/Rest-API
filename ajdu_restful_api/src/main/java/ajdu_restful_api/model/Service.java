@@ -39,10 +39,7 @@ public class Service {
 	private Organization organization;
 	
 	@OneToMany(mappedBy="service")
-	private List<Movie> movie;
-	
-	@OneToMany(mappedBy="service")
-	private List<Image> image;
+	private List<Media> media;
 	
 	@ManyToMany
 	@JoinTable(
@@ -69,21 +66,19 @@ public class Service {
 
 	public Service() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 
 	public Service(String name, String description, BigDecimal cost,
-			boolean isDistinct, Organization organization, List<Movie> movie,
-			List<Image> image, List<Category> categories, List<Opinion> opinions) {
+			boolean isDistinct, Organization organization, List<Media> media,
+			List<Category> categories, List<Opinion> opinions) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.cost = cost;
 		this.isDistinct = isDistinct;
 		this.organization = organization;
-		this.movie = movie;
-		this.image = image;
+		this.media = media;
 		this.categories = categories;
 		this.opinions = opinions;
 	}
@@ -149,23 +144,13 @@ public class Service {
 	}
 
 
-	public List<Movie> getMovie() {
-		return movie;
+	public List<Media> getMedia() {
+		return media;
 	}
 
 
-	public void setMovie(List<Movie> movie) {
-		this.movie = movie;
-	}
-
-
-	public List<Image> getImage() {
-		return image;
-	}
-
-
-	public void setImage(List<Image> image) {
-		this.image = image;
+	public void setMedia(List<Media> media) {
+		this.media = media;
 	}
 
 
@@ -199,16 +184,14 @@ public class Service {
 	}
 
 
-
 	@Override
 	public String toString() {
 		return "Service [id=" + id + ", name=" + name + ", description="
 				+ description + ", cost=" + cost + ", isDistinct=" + isDistinct
-				+ ", organization=" + organization + ", movie=" + movie
-				+ ", image=" + image + ", categories=" + categories + ", opinions="
-				+ opinions + "]";
+				+ ", organization=" + organization + ", media=" + media
+				+ ", categories=" + categories + ", opinions=" + opinions
+				+ ", packages=" + packages + "]";
 	}
-
 	
 	
 	

@@ -14,6 +14,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ajdu_restful_api.config.GlobalProperties;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -28,6 +31,7 @@ public class Post {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern=GlobalProperties.DATETIME_PATTERN)
 	private Date dateCreated;
 	
 	@ManyToOne
@@ -35,12 +39,12 @@ public class Post {
 	@JsonIgnoreProperties({
 		"title", "description",
 		"dateCreated", "user",
-		"posts", "image"
+		"posts", "media"
 	})
 	private Blog blog;
 	
 	@OneToOne(mappedBy="post")
-	private Image image;
+	private Media media;
 	
 	@OneToMany(mappedBy="post")
 	@JsonIgnoreProperties({"post", "user"})
@@ -50,13 +54,13 @@ public class Post {
 
 
 	public Post(String title, String content, Date dateCreated, Blog blog,
-			Image image, List<Comment> comments) {
+			Media media, List<Comment> comments) {
 		super();
 		this.title = title;
 		this.content = content;
 		this.dateCreated = dateCreated;
 		this.blog = blog;
-		this.image = image;
+		this.media = media;
 		this.comments = comments;
 	}
 
@@ -112,13 +116,13 @@ public class Post {
 	
 	
 
-	public Image getImage() {
-		return image;
+	public Media getMedia() {
+		return media;
 	}
 
 
-	public void setImage(Image image) {
-		this.image = image;
+	public void setMedia(Media media) {
+		this.media = media;
 	}
 
 
@@ -126,12 +130,7 @@ public class Post {
 	public String toString() {
 		return "Post [id=" + id + ", title=" + title + ", content=" + content
 				+ ", dateCreated=" + dateCreated + ", blog=" + blog
-				+ ", image=" + image + ", comments=" + comments + "]";
-	}
-
-
-
-	
-	
+				+ ", media=" + media + ", comments=" + comments + "]";
+	}	
 	
 }

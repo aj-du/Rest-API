@@ -13,6 +13,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ajdu_restful_api.config.GlobalProperties;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -27,6 +30,7 @@ public class Blog {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern=GlobalProperties.DATETIME_PATTERN)
 	private Date dateCreated;
 	
 	@OneToOne
@@ -39,32 +43,32 @@ public class Blog {
 		"opinions","comments",
 		"dateCreated", "gender",
 		"mainUsers", "permittedUsers",
-		"profileImage", "active", "partner",
+		"profileMedia", "active", "partner",
 		"marriage", "wedding", "todoTasks"
 		})
 	private User user;
 	
 	@OneToMany(mappedBy="blog")
 	@JsonIgnoreProperties({
-		"blog","coments", "image", 
+		"blog","coments", "media", 
 		"dateCreated", "content", "comments"
 	})
 	private List<Post> posts;
 	
 	@OneToOne(mappedBy="blog")
-	private Image image;
+	private Media media;
 	
 	public Blog(){}
 
 	public Blog(String title, String description, Date dateCreated, User user,
-			List<Post> posts, Image image) {
+			List<Post> posts, Media media) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.dateCreated = dateCreated;
 		this.user = user;
 		this.posts = posts;
-		this.image = image;
+		this.media = media;
 	}
 
 
@@ -118,19 +122,19 @@ public class Blog {
 	}
 	
 	
-	public Image getImage() {
-		return image;
+	public Media getMedia() {
+		return media;
 	}
 
-	public void setImage(Image image) {
-		this.image = image;
+	public void setMedia(Media media) {
+		this.media = media;
 	}
 
 	@Override
 	public String toString() {
 		return "Blog [id=" + id + ", title=" + title + ", description="
 				+ description + ", dateCreated=" + dateCreated + ", user="
-				+ user + ", posts=" + posts + ", image=" + image + "]";
+				+ user + ", posts=" + posts + ", media=" + media + "]";
 	}
 
 

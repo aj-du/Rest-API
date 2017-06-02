@@ -67,7 +67,7 @@ public class BlogRestController {
 		if(p != null) {
 			p.setTitle(blog.getTitle());
 			p.setDescription(blog.getDescription());
-			p.setImage(blog.getImage());
+			p.setMedia(blog.getMedia());
 			p.setPosts(blog.getPosts());
 			blogService.save(p);
 			return new ResponseEntity<Blog>(p, HttpStatus.OK);
