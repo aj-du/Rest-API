@@ -106,6 +106,11 @@ public class User extends Person {
 	private Date dateCreated;
 	
 	@OneToMany(mappedBy="user")
+	@JsonIgnoreProperties({
+		"rate","content",
+		"dateCreated", "service",
+		"user"
+	})
 	private List<Opinion> opinions;
 	
 	@OneToMany(mappedBy="user")

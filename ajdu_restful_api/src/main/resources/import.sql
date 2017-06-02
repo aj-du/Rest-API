@@ -81,9 +81,13 @@ insert into category (name) values ("Transport");
 insert into category (name) values ("Odzież");
 insert into category (name) values ("Atrakcje dodatkowe");
 
-insert into service (name, cost, organization_id) values ("pierwsza",1200.00,1);
-insert into service (name, cost, organization_id) values ("druga",1350.00,1);
-insert into service (name, cost, organization_id) values ("trzecia",1050.00,1);
+insert into service (name, cost, organization_id) values ("Wynajem sali weselnej (24h)",12000.00,1);
+insert into service (name, cost, organization_id) values ("Wynajem sali z obsługą (24h)",18500.00,1);
+insert into service (name, cost, organization_id) values ("Wynajem kuchni (24h)",8500.00,1);
+
+insert into opinion (rate, content, service_id, user_id) values (5, "Sala przestronna, miła obsługa, wyposażona w światła, niezła akustyka. Kierownik sali pełni rolę mistrza ceremonii, co jest bardzo przydatne przy weselu. Polecamy!!!", 2,1);
+insert into opinion (rate, content, service_id, user_id) values (3, "Sala taka sobie. Klimatyzacja była zepsuta na naszym weselu i ludzie tonęli we własnym pocie. 3/5", 2,2);
+
 
 insert into service_category (service_id, category_id) values (3,1);
 insert into service_category (service_id, category_id) values (3,4);

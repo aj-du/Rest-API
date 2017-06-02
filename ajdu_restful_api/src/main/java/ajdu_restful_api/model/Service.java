@@ -53,6 +53,9 @@ public class Service {
 	private List<Category> categories;
 	
 	@OneToMany(mappedBy="service")
+	@JsonIgnoreProperties({
+		"service"
+	})
 	private List<Opinion> opinions;
 	
 	@ManyToMany
