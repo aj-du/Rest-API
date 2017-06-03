@@ -39,6 +39,9 @@ public class Service {
 	private Organization organization;
 	
 	@OneToMany(mappedBy="service")
+	@JsonIgnoreProperties({
+		"blog","post","user","service"
+	})
 	private List<Media> media;
 	
 	@ManyToMany

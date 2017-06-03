@@ -21,7 +21,7 @@ import ajdu_restful_api.service.PostService;
 import ajdu_restful_api.service.UserService;
 
 @RestController
-public class CommentController {
+public class CommentRestController {
 	
 	@Autowired
 	CommentService commentService;

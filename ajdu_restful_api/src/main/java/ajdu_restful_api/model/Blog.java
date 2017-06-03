@@ -56,6 +56,9 @@ public class Blog {
 	private List<Post> posts;
 	
 	@OneToOne(mappedBy="blog")
+	@JsonIgnoreProperties({
+		"blog","post","user","service"
+	})
 	private Media media;
 	
 	public Blog(){}

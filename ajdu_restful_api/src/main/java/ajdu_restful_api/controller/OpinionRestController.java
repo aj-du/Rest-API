@@ -21,7 +21,7 @@ import ajdu_restful_api.service.ServiceService;
 import ajdu_restful_api.service.UserService;
 
 @RestController
-public class OpinionController {
+public class OpinionRestController {
 	
 	@Autowired
 	OpinionService opinionService;
