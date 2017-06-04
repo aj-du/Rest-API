@@ -66,14 +66,17 @@ public class PackageRestController {
 		Package p = packService.findPackage(id);
 		if(p != null) {
 			List<Service> services = new ArrayList<Service>();
-			for(Service serv: pack.getServices()) {
-				if(serv.getId() != null && serviceService.findService(serv.getId()) != null)
-					services.add(serviceService.findService(serv.getId()));
-				else return new ResponseEntity<Package>(HttpStatus.BAD_REQUEST);
+			if(pack.getServices() != null) {
+				for(Service serv: pack.getServices()) {
+					if(serv.getId() != null && serviceService.findService(serv.getId()) != null)
+						services.add(serviceService.findService(serv.getId()));
+					else return new ResponseEntity<Package>(HttpStatus.BAD_REQUEST);
+				}
+				p.setServices(services);
+				packService.save(p);
+				return new ResponseEntity<Package>(p, HttpStatus.OK);
 			}
-			p.setServices(services);
-			packService.save(p);
-			return new ResponseEntity<Package>(p, HttpStatus.OK);
+			else return new ResponseEntity<Package>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Package>(HttpStatus.NOT_FOUND);
 	}
