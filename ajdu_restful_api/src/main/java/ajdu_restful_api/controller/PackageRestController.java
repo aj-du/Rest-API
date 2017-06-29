@@ -45,7 +45,7 @@ public class PackageRestController extends AuthenticatedRestController {
 		User u = userService.findUser(pack.getUser().getId());
 		
 		if(!hasPermission(auth, u.getLogin()))
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		
 		if(u.getPack() != null)
 			return new ResponseEntity<Package>(HttpStatus.CONFLICT);
@@ -63,7 +63,7 @@ public class PackageRestController extends AuthenticatedRestController {
 		if(p != null){
 			User u = userService.findUser(p.getUser().getId());
 			if(!hasPermission(auth, u.getLogin()))
-				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 			else return new ResponseEntity<Package>(p,HttpStatus.OK); 
 		}
 		else return new ResponseEntity<Package>(HttpStatus.NOT_FOUND);
@@ -77,7 +77,7 @@ public class PackageRestController extends AuthenticatedRestController {
 		if(p != null) {
 			User u = userService.findUser(p.getUser().getId());
 			if(!hasPermission(auth, u.getLogin()))
-				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 			
 			List<Service> services = new ArrayList<Service>();
 			if(pack.getServices() != null) {
@@ -102,7 +102,7 @@ public class PackageRestController extends AuthenticatedRestController {
 		if(p != null) {
 			User u = userService.findUser(p.getUser().getId());
 			if(!hasPermission(auth, u.getLogin()))
-				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 			
 			packService.delete(id);
 			return new ResponseEntity<Package>(HttpStatus.NO_CONTENT);
@@ -117,7 +117,7 @@ public class PackageRestController extends AuthenticatedRestController {
 		if(p != null) {
 			User u = userService.findUser(p.getUser().getId());
 			if(!hasPermission(auth, u.getLogin()))
-				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 			else return new ResponseEntity<List<Service>>(serviceService.findAllServicesByPackage(id), HttpStatus.OK);
 		}
 		else 
@@ -135,7 +135,7 @@ public class PackageRestController extends AuthenticatedRestController {
 		else {
 			User u = userService.findUser(p.getUser().getId());
 			if(!hasPermission(auth, u.getLogin()))
-				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 			
 			Service s = serviceService.findService(service.getId());
 			if(s == null)
@@ -162,7 +162,7 @@ public class PackageRestController extends AuthenticatedRestController {
 		else {
 			User u = userService.findUser(p.getUser().getId());
 			if(!hasPermission(auth, u.getLogin()))
-				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 			
 			p.getServices().remove(s);
 			packService.save(p);

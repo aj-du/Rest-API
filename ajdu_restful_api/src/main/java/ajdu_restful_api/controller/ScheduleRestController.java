@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ import ajdu_restful_api.service.CalendarTaskService;
 import ajdu_restful_api.service.UserService;
 
 @RestController
-public class ScheduleRestController {
+public class ScheduleRestController extends AuthenticatedRestController {
 
 	@Autowired
 	ScheduleService scheduleService;
@@ -37,12 +38,15 @@ public class ScheduleRestController {
 	}
 	
 	@RequestMapping(value="/schedules",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Schedule> addSchedule(@RequestBody Schedule schedule) {
+	public ResponseEntity<Schedule> addSchedule(@RequestBody Schedule schedule, Authentication auth) {
 		if(schedule.getUser() == null || schedule.getUser().getId() == null) {
 			return new ResponseEntity<Schedule>(HttpStatus.BAD_REQUEST);
 		}
 		else {		
 			User u = userService.findUser(schedule.getUser().getId());
+			if(!hasPermission(auth, u.getLogin()))
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			
 			if(u.getSchedule() != null)
 				return new ResponseEntity<Schedule>(HttpStatus.CONFLICT);
 			else {			
@@ -53,9 +57,13 @@ public class ScheduleRestController {
 	}
 	
 	@RequestMapping(value="/schedules/{id}",method=RequestMethod.DELETE)
-	public ResponseEntity<Schedule> deleteSchedule(@PathVariable int id) {
+	public ResponseEntity<Schedule> deleteSchedule(@PathVariable int id, Authentication auth) {
 		Schedule s = scheduleService.findSchedule(id);
 		if(s != null) {
+			User u = userService.findUser(s.getUser().getId());
+			if(!hasPermission(auth, u.getLogin()))
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			
 			scheduleService.delete(id);
 			return new ResponseEntity<Schedule>(HttpStatus.NO_CONTENT);
 		}
@@ -63,16 +71,26 @@ public class ScheduleRestController {
 	}
 	
 	@RequestMapping(value="/schedules/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Schedule> getSchedule(@PathVariable int id) {
-		if(scheduleService.findSchedule(id) != null)
+	public ResponseEntity<Schedule> getSchedule(@PathVariable int id, Authentication auth) {
+		Schedule s = scheduleService.findSchedule(id);
+		if(s != null) {
+			User u = userService.findUser(s.getUser().getId());
+			if(!hasPermission(auth, u.getLogin()))
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			
 			return new ResponseEntity<Schedule>(scheduleService.findSchedule(id),HttpStatus.OK);
+		}
 		else return new ResponseEntity<Schedule>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value="/schedules/{id}",method=RequestMethod.PUT,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE )
-	public ResponseEntity<Schedule> updateSchedule(@PathVariable int id, @RequestBody Schedule schedule) {
+	public ResponseEntity<Schedule> updateSchedule(@PathVariable int id, @RequestBody Schedule schedule, Authentication auth) {
 		Schedule s = scheduleService.findSchedule(id);
 		if(s != null) {
+			User u = userService.findUser(s.getUser().getId());
+			if(!hasPermission(auth, u.getLogin()))
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			
 			s.setTasks(schedule.getTasks());
 			scheduleService.save(s);
 			return new ResponseEntity<Schedule>(s, HttpStatus.OK);
@@ -81,17 +99,27 @@ public class ScheduleRestController {
 	}
 	
 	@RequestMapping(value="/schedules/{id}/tasks",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<List<CalendarTask>> findAllTasksBySchedule(@PathVariable int id){
-		if(scheduleService.findSchedule(id) != null) 
+	public ResponseEntity<List<CalendarTask>> findAllTasksBySchedule(@PathVariable int id, Authentication auth){
+		Schedule s = scheduleService.findSchedule(id);
+		if(s != null) {
+			User u = userService.findUser(s.getUser().getId());
+			if(!hasPermission(auth, u.getLogin()))
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			
 			return new ResponseEntity<List<CalendarTask>>(taskService.findAllTaskBySchedule(id), HttpStatus.OK);
+		}
 		else 
 			return new ResponseEntity<List<CalendarTask>>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value="/schedules/{id}/tasks", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<CalendarTask> addTaskToSchedule(@RequestBody CalendarTask task, @PathVariable int id) {
+	public ResponseEntity<CalendarTask> addTaskToSchedule(@RequestBody CalendarTask task, @PathVariable int id, Authentication auth) {
 		Schedule s = scheduleService.findSchedule(id);
 		if(s != null) {
+			User u = userService.findUser(s.getUser().getId());
+			if(!hasPermission(auth, u.getLogin()))
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			
 			task.setSchedule(s);
 			task.setStatus(TaskStatus.TODO);
 			taskService.saveTask(task);

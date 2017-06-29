@@ -83,7 +83,7 @@ public class UserRestController extends AuthenticatedRestController {
 				permUser.getMainUsers().add(u);
 				userService.save(permUser);
 				return new ResponseEntity<User>(user, HttpStatus.OK);
-			} else return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
+			} else return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
 		}
 		else return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
@@ -94,7 +94,7 @@ public class UserRestController extends AuthenticatedRestController {
 			if(u!=null && u.getPermittedUsers()!=null && !u.getPermittedUsers().isEmpty()) {
 				if(hasPermission(auth, u.getLogin()))
 					return new ResponseEntity<List<User>>(u.getPermittedUsers(), HttpStatus.OK);
-				else return new ResponseEntity<List<User>>(HttpStatus.UNAUTHORIZED);	
+				else return new ResponseEntity<List<User>>(HttpStatus.FORBIDDEN);	
 			}
 			else return new ResponseEntity<List<User>>(HttpStatus.NOT_FOUND); 
 	}
@@ -107,7 +107,7 @@ public class UserRestController extends AuthenticatedRestController {
 		if(u != null)
 			if(hasPermission(auth, u.getLogin()))
 				return new ResponseEntity<User>(u, HttpStatus.OK);
-			else return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);		
+			else return new ResponseEntity<User>(HttpStatus.FORBIDDEN);		
 		else return new ResponseEntity<User> (HttpStatus.NOT_FOUND);
 	}
 	
@@ -119,7 +119,7 @@ public class UserRestController extends AuthenticatedRestController {
 			if(hasPermission(auth, u.getLogin())) {
 				userService.delete(id);
 				return new ResponseEntity<User>(HttpStatus.NO_CONTENT);				
-			} else return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
+			} else return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
 		}
 		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
@@ -139,7 +139,7 @@ public class UserRestController extends AuthenticatedRestController {
 				u.setRoles(user.getRoles());
 				userService.save(u);
 				return new ResponseEntity<User>(u, HttpStatus.OK);
-			} else return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
+			} else return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
 		}
 		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
@@ -149,7 +149,7 @@ public class UserRestController extends AuthenticatedRestController {
 		if(userService.findUserByLogin(login) != null)
 			if(hasPermission(auth, login))
 				return new ResponseEntity<User> (userService.findUserByLogin(login), HttpStatus.OK);
-			else return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
+			else return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
 		else return new ResponseEntity<User> (HttpStatus.NOT_FOUND);
 	}
 	
@@ -160,7 +160,7 @@ public class UserRestController extends AuthenticatedRestController {
 		if(u != null && s != null) 
 			if(hasPermission(auth, u.getLogin()))
 				return new ResponseEntity<Schedule>(s,HttpStatus.OK);
-			else return new ResponseEntity<Schedule>(HttpStatus.UNAUTHORIZED);
+			else return new ResponseEntity<Schedule>(HttpStatus.FORBIDDEN);
 		else return new ResponseEntity<Schedule>(HttpStatus.NOT_FOUND);
 	}
 	
@@ -172,7 +172,7 @@ public class UserRestController extends AuthenticatedRestController {
 			if(p != null) {
 				if(hasPermission(auth, u.getLogin()))
 					return new ResponseEntity<Package>(p,HttpStatus.OK);				
-				else return new ResponseEntity<Package>(HttpStatus.UNAUTHORIZED);
+				else return new ResponseEntity<Package>(HttpStatus.FORBIDDEN);
 			} else return new ResponseEntity<Package>(HttpStatus.NOT_FOUND);
 		} else return new ResponseEntity<Package>(HttpStatus.NOT_FOUND);
 	}

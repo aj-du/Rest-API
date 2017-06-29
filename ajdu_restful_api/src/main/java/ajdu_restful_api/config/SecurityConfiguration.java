@@ -51,11 +51,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		httpSecurity
 						.authorizeRequests()
 						.antMatchers(HttpMethod.POST, "/users").anonymous()
-						.antMatchers(HttpMethod.POST, "/*").permitAll()
+						.antMatchers(HttpMethod.POST, "/*").authenticated()
 						.antMatchers(HttpMethod.GET, "/*").access("hasAuthority('ADMIN')")
 						.antMatchers("/*/**").access("hasAnyAuthority('ADMIN','REG_USER')")
-						/*.antMatchers(HttpMethod.GET, "/packages").access("hasAuthority('ADMIN')")
-						.antMatchers("/packages/**").access("hasAnyAuthority('ADMIN','REG_USER')")*/
 						.and()
 						.httpBasic();
 		httpSecurity
