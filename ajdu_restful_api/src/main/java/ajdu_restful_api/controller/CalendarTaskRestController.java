@@ -1,5 +1,6 @@
 package ajdu_restful_api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ajdu_restful_api.model.CalendarTask;
 import ajdu_restful_api.model.Schedule;
+import ajdu_restful_api.model.TaskStatus;
 import ajdu_restful_api.model.User;
 import ajdu_restful_api.service.CalendarTaskService;
 import ajdu_restful_api.service.ScheduleService;
@@ -34,6 +36,31 @@ public class CalendarTaskRestController {
 	@RequestMapping(value="/tasks",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<CalendarTask>> getAllTask() {
 			return new ResponseEntity<List<CalendarTask>>(taskService.findAll(),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/tasks",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<CalendarTask>> saveNewTask(@RequestBody CalendarTask task) {
+		if(task.getDate() != null && 
+				task.getName() != null && 
+				task.getSchedule() !=null && 
+				task.getSchedule().getId() != null) {
+			Schedule s = scheduleService.findSchedule(task.getSchedule().getId());		
+			if(s != null) {				
+				if(task.getStatus() == null) task.setStatus(TaskStatus.TODO); 
+				
+				if(s.getTasks() != null) s.getTasks().add(task);
+				else {
+					List<CalendarTask> tasks = new ArrayList<CalendarTask>();
+					tasks.add(task);
+					s.setTasks(tasks);
+				}
+				
+				taskService.saveTask(task);
+				scheduleService.save(s);
+				
+				return new ResponseEntity<List<CalendarTask>>(HttpStatus.CREATED);
+			} else return new ResponseEntity<List<CalendarTask>>(HttpStatus.NOT_FOUND);
+		} else return new ResponseEntity<List<CalendarTask>>(HttpStatus.BAD_REQUEST);
 	}
 	
 	
