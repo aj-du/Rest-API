@@ -19,11 +19,14 @@ import javax.persistence.TemporalType;
 import ajdu_restful_api.config.GlobalProperties;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 
 @Entity
-@JsonIgnoreProperties({"password", "services"})
+@JsonIgnoreProperties({"services"})
 public class Organization {
 	
 	@Id
@@ -32,6 +35,8 @@ public class Organization {
 	
 	private String name;
 	private String login;
+	
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	private String email;
 	private String phoneNumber;
@@ -100,6 +105,7 @@ public class Organization {
 		this.login = login;
 	}
 
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}

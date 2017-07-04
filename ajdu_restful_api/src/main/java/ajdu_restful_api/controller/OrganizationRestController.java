@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ import ajdu_restful_api.service.AddressService;
 import ajdu_restful_api.service.OrganizationService;
 
 @RestController
-public class OrganizationRestController {
+public class OrganizationRestController extends AuthenticatedRestController {
 
 	@Autowired
 	private OrganizationService organizationService;
@@ -33,17 +34,24 @@ public class OrganizationRestController {
 	
 	@RequestMapping(value="/orgs",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Organization> saveOrg(@RequestBody Organization org) {
-		
-		if(organizationService.findOrgByLogin(org.getLogin()) == null) {			
-			addressService.saveAddress(org.getAddress());
-			organizationService.saveOrg(org);
-			return new ResponseEntity<Organization>(org,HttpStatus.CREATED);
+		if(org.getLogin() != null &&
+				org.getPassword() != null &&
+				org.getName() != null &&
+				org.getEmail() != null &&
+				org.getAddress() != null &&
+				org.getAddress().getCity() != null) {
+			if(organizationService.findOrgByLogin(org.getLogin()) == null) {			
+				addressService.saveAddress(org.getAddress());
+				organizationService.saveOrg(org);
+				return new ResponseEntity<Organization>(org,HttpStatus.CREATED);
+			} else
+				return new ResponseEntity<Organization>(HttpStatus.CONFLICT);
 		}
-		return new ResponseEntity<Organization>(HttpStatus.CONFLICT);
+		return new ResponseEntity<Organization>(HttpStatus.BAD_REQUEST);
 	}
 	
 	@RequestMapping(value="/orgs/by/categories", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<List<Organization>> getOrgsByCategories(@RequestParam List<Integer> catIds) {
+	public ResponseEntity<List<Organization>> getOrgsByCategories(@RequestParam List<Integer> catIds, Authentication auth) {
 		return new ResponseEntity<List<Organization>>(organizationService.findByCategoryId(catIds), HttpStatus.OK);
 	}
 	
@@ -96,5 +104,21 @@ public class OrganizationRestController {
 		else 
 			return new ResponseEntity<Organization>(HttpStatus.NOT_FOUND);
 	}
+	
+	
+	@RequestMapping(value="/orgs/by/login",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Organization> getOrgByLogin(@RequestParam String login) {
+		Organization org = organizationService.findOrgByLogin(login);
+		if(org != null)
+			return new ResponseEntity<Organization>(org,HttpStatus.OK);
+		else 
+			return new ResponseEntity<Organization>(HttpStatus.NOT_FOUND);
+	}	
+	
+	
+	@RequestMapping(value="/orgs/by/city",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<Organization>> getOrgsByCity(@RequestParam String city) {
+		return new ResponseEntity<List<Organization>>(organizationService.findByCity(city), HttpStatus.OK);
+	}	
 	
 }

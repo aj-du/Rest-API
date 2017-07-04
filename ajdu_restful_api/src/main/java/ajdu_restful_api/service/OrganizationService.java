@@ -32,6 +32,10 @@ public class OrganizationService {
 		return (List<Organization>)organizationRepository.findDistinctByCategoriesIdIn(catIds);
 	}
 	
+	public List<Organization> findByCity(String city) {
+		return (List<Organization>)organizationRepository.findByAddressCityIgnoreCase(city);
+	}
+	
 	public Organization findOneOrg(int id) {
 		return organizationRepository.findOne(id);
 	}

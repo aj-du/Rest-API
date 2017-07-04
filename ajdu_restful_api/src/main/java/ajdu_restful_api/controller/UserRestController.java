@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ajdu_restful_api.model.Package;
@@ -144,8 +145,8 @@ public class UserRestController extends AuthenticatedRestController {
 		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
 	
-	@RequestMapping(value="/users/by/login/{login}",method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<User> findUserByLogin(@PathVariable String login, Authentication auth) {
+	@RequestMapping(value="/users/by/login",method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<User> findUserByLogin(@RequestParam String login, Authentication auth) {
 		if(userService.findUserByLogin(login) != null)
 			if(hasPermission(auth, login))
 				return new ResponseEntity<User> (userService.findUserByLogin(login), HttpStatus.OK);

@@ -25,11 +25,13 @@ import javax.persistence.TemporalType;
 import ajdu_restful_api.config.GlobalProperties;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 
 @Entity
-@JsonIgnoreProperties({"password"})
 public class User extends Person {
 
 	@Id
@@ -69,6 +71,7 @@ public class User extends Person {
 	private List<User> permittedUsers = new ArrayList<User>();
 	
 	private String login;
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	private String email;
 
@@ -191,6 +194,7 @@ public class User extends Person {
 		this.login = login;
 	}
 
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
