@@ -40,8 +40,8 @@ public class CalendarTaskRestController {
 	
 	@RequestMapping(value="/tasks",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<List<CalendarTask>> saveNewTask(@RequestBody CalendarTask task) {
-		if(task.getDate() != null && 
-				task.getName() != null && 
+		if(task.getStart() != null && 
+				task.getTitle() != null && 
 				task.getSchedule() !=null && 
 				task.getSchedule().getId() != null) {
 			Schedule s = scheduleService.findSchedule(task.getSchedule().getId());		
@@ -94,9 +94,10 @@ public class CalendarTaskRestController {
 	public ResponseEntity<CalendarTask> updateTask(@PathVariable int id, @RequestBody CalendarTask task) {
 		CalendarTask t = taskService.findTask(id);
 		if(t != null) {
-			t.setName(task.getName());
+			t.setTitle(task.getTitle());
 			t.setDescription(task.getDescription());
-			t.setDueDate(task.getDueDate());
+			t.setStart(task.getStart());
+			t.setEnd(task.getEnd());
 			t.setStatus(task.getStatus());
 			taskService.saveTask(t);
 			return new ResponseEntity<CalendarTask>(t, HttpStatus.OK);

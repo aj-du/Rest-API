@@ -2,6 +2,7 @@ package ajdu_restful_api.model;
 
 import java.util.Calendar;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,6 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ajdu_restful_api.config.GlobalProperties;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -22,10 +26,15 @@ public class CalendarTask extends GenericTask {
 	private Integer id;
 	
 	@Temporal(TemporalType.DATE)
-	private Calendar date;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern=GlobalProperties.DATETIME_PATTERN, timezone="CET")
+	private Calendar start;
 	
 	@Temporal(TemporalType.DATE)
-	private Calendar dueDate;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern=GlobalProperties.DATETIME_PATTERN, timezone="CET")
+	private Calendar end;
+	
+	@Column(columnDefinition="boolean default false")
+	private boolean allDay;
 	
 	private String location;
 	
@@ -59,13 +68,13 @@ public class CalendarTask extends GenericTask {
 	}
 
 
-	public Calendar getDueDate() {
-		return dueDate;
+	public Calendar getEnd() {
+		return end;
 	}
 
 
-	public void setDueDate(Calendar dueDate) {
-		this.dueDate = dueDate;
+	public void setEnd(Calendar end) {
+		this.end = end;
 	}
 
 
@@ -89,13 +98,13 @@ public class CalendarTask extends GenericTask {
 	}
 
 
-	public Calendar getDate() {
-		return date;
+	public Calendar getStart() {
+		return start;
 	}
 
 
-	public void setDate(Calendar date) {
-		this.date = date;
+	public void setStart(Calendar start) {
+		this.start = start;
 	}
 
 
@@ -107,12 +116,24 @@ public class CalendarTask extends GenericTask {
 	public void setLocation(String location) {
 		this.location = location;
 	}
+	
+	
+
+
+	public boolean isAllDay() {
+		return allDay;
+	}
+
+
+	public void setAllDay(boolean allDay) {
+		this.allDay = allDay;
+	}
 
 
 	@Override
 	public String toString() {
 		return "Task [id=" + id + ", name=" + ", description="
-				+ ", dueDate=" + dueDate + ", schedule="
+				+ ", end=" + end + ", schedule="
 				+ schedule + ", status=" + status + super.toString() + "]";
 	}
 	

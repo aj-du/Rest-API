@@ -90,7 +90,7 @@ public class TodoTaskRestController {
 		TodoTask t = taskService.findTask(id);
 		if(t != null) {
 			if(t.isUserDefined()) {
-				t.setName(task.getName());
+				t.setTitle(task.getTitle());
 				t.setDescription(task.getDescription());
 				t.setStatus(task.getStatus());
 				taskService.saveTask(t);

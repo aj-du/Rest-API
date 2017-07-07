@@ -7,26 +7,26 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class GenericTask {
 
-	private String name;
+	private String title;
 	private String description;
 	@Enumerated(EnumType.STRING)
 	private TaskStatus status;
 	
 	public GenericTask(){}
 	
-	public GenericTask(String name, String description, TaskStatus status) {
+	public GenericTask(String title, String description, TaskStatus status) {
 		super();
-		this.name = name;
+		this.title = title;
 		this.description = description;
 		this.status = status;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getDescription() {
@@ -47,7 +47,7 @@ public abstract class GenericTask {
 
 	@Override
 	public String toString() {
-		return "GenericTask [name=" + name + ", description=" + description
+		return "GenericTask [title=" + title + ", description=" + description
 				+ ", status=" + status + "]";
 	}
 	
