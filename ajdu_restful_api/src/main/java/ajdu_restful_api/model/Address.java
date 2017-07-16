@@ -14,7 +14,7 @@ public class Address {
 	
 	private String city;
 	private String postalCode;
-	private String country;
+	//private String country;
 	private String region;
 	private String line1;
 	private String line2;
@@ -30,7 +30,7 @@ public class Address {
 		super();
 		this.city = city;
 		this.postalCode = postalCode;
-		this.country = country;
+		//this.country = country;
 		this.region = region;
 		this.line1 = line1;
 		this.line2 = line2;
@@ -60,13 +60,13 @@ public class Address {
 		this.postalCode = postalCode;
 	}
 
-	public String getCountry() {
+	/*public String getCountry() {
 		return country;
 	}
 
 	public void setCountry(String country) {
 		this.country = country;
-	}
+	}*/
 
 	public String getRegion() {
 		return region;
@@ -95,7 +95,7 @@ public class Address {
 	@Override
 	public String toString() {
 		return "Address [id=" + id + ", city=" + city + ", postalCode="
-				+ postalCode + ", country=" + country + ", region=" + region
+				+ postalCode /*+ ", country=" + country*/ + ", region=" + region
 				+ ", line1=" + line1 + ", line2=" + line2 + "]";
 	};
 	

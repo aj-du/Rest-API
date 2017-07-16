@@ -39,7 +39,10 @@ public class OrganizationRestController extends AuthenticatedRestController {
 				org.getName() != null &&
 				org.getEmail() != null &&
 				org.getAddress() != null &&
-				org.getAddress().getCity() != null) {
+				org.getAddress().getCity() != null &&
+				org.getAddress().getPostalCode() != null &&
+				org.getAddress().getRegion() != null &&
+				org.getAddress().getLine1() != null) {
 			if(organizationService.findOrgByLogin(org.getLogin()) == null) {			
 				addressService.saveAddress(org.getAddress());
 				organizationService.saveOrg(org);

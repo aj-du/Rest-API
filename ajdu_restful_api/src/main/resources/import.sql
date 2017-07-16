@@ -59,8 +59,8 @@ insert into todo_task (title, description, status) values ("Podziękowania dla g
 insert into todo_task (title, description, status) values ("Księga pamiątkowa", "", "TODO");
 
 
-insert into address (city, country, line1, line2, postal_code, region) values ("Gdansk", "PL","Sala Weselna \"Olimp\"","Kartuska 123","80-012","pomorskie");
-insert into address (city, country, line1, line2, postal_code, region) values ("Wejherowo", "PL","Restauracja \"Nova\"","Lęborska 12H","80-240","pomorskie");
+insert into address (city, line1, line2, postal_code, region) values ("Gdansk","Sala Weselna \"Olimp\"","Kartuska 123","80-012","pomorskie");
+insert into address (city, line1, line2, postal_code, region) values ("Wejherowo","Restauracja \"Nova\"","Lęborska 12H","80-240","pomorskie");
 
 insert into organization (name,login,password,email,address_id) values ("Sala Weselna \"Olimp\"","olimp_gda","salaweslna123a","olimp_gdansk@firma.pl",1);
 

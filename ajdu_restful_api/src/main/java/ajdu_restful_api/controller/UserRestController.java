@@ -45,7 +45,7 @@ public class UserRestController extends AuthenticatedRestController {
 	@RequestMapping(value="/users", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<User> addUser(@RequestBody User user, Authentication auth) {
 			if(user.getLogin() != null &&
-					user.getPartner() != null &&
+					user.getGender() != null &&
 					user.getFirstName() != null && 
 					user.getLastName() != null && 
 					user.getEmail() != null && 
