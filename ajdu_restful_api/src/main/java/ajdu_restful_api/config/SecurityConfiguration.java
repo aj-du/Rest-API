@@ -42,6 +42,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.inMemoryAuthentication()
 					.withUser("user").password("password").roles("REG_USER").and()
 					.withUser("test").password("test").roles("ADMIN");
+		
+		auth.jdbcAuthentication()
+				.dataSource(dataSource)
+				.usersByUsernameQuery(
+						"SELECT login as username, password, active FROM organization where login=?"
+				)
+				.authoritiesByUsernameQuery("SELECT organization.login as username, 'REG_USER' as user_role from organization where organization.login=?"
+						 );
 	}
 	
 	
