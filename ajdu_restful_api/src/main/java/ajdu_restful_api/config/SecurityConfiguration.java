@@ -29,6 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	protected void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 		
+		// authentication provider for Users
 		auth.jdbcAuthentication()
 				.dataSource(dataSource)
 				//.passwordEncoder(passwordEncoder())
@@ -43,6 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					.withUser("user").password("password").roles("REG_USER").and()
 					.withUser("test").password("test").roles("ADMIN");
 		
+		// authentication provider for Organizations
 		auth.jdbcAuthentication()
 				.dataSource(dataSource)
 				.usersByUsernameQuery(

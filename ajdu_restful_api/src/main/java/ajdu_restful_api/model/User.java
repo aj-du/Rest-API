@@ -107,7 +107,6 @@ public class User extends Person {
 	})
 	private Media profileImage;	
 
-	@Column(columnDefinition="boolean default false")
 	private boolean active;
 	
 	@Temporal(TemporalType.TIMESTAMP)

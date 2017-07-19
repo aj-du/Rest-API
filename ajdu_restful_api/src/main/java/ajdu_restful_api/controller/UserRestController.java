@@ -59,7 +59,6 @@ public class UserRestController extends AuthenticatedRestController {
 						user.setRoles(roles);
 					}
 				
-					partnerService.save(user.getPartner());
 					userService.save(user);	
 					return new ResponseEntity<User>(user, HttpStatus.CREATED);
 				}
