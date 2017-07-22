@@ -25,11 +25,11 @@ public class CalendarTask extends GenericTask {
 	@GeneratedValue
 	private Integer id;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern=GlobalProperties.DATETIME_PATTERN, timezone="CET")
 	private Calendar start;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern=GlobalProperties.DATETIME_PATTERN, timezone="CET")
 	private Calendar end;
 	

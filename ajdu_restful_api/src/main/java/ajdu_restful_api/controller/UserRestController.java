@@ -59,6 +59,13 @@ public class UserRestController extends AuthenticatedRestController {
 						user.setRoles(roles);
 					}
 				
+					// adding schedule for user on creation
+					if(user.getSchedule() == null) {
+						Schedule schedule = new Schedule();
+						schedule.setUser(user);
+						user.setSchedule(schedule);	
+					}
+					
 					userService.save(user);	
 					return new ResponseEntity<User>(user, HttpStatus.CREATED);
 				}

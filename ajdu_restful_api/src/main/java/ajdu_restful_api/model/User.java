@@ -98,7 +98,7 @@ public class User extends Person {
 	private Blog blog;
 	
 	@JsonIgnoreProperties({"user", "tasks"})
-	@OneToOne(mappedBy="user", cascade=CascadeType.REMOVE)
+	@OneToOne(mappedBy="user", cascade=CascadeType.ALL)
 	private Schedule schedule;
 	
 	@OneToOne(mappedBy="user", cascade=CascadeType.REMOVE)

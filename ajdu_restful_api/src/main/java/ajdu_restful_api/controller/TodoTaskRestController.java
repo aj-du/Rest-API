@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ import ajdu_restful_api.service.TodoTaskService;
 import ajdu_restful_api.service.UserService;
 
 @RestController
-public class TodoTaskRestController {
+public class TodoTaskRestController extends AuthenticatedRestController {
 	
 	@Autowired
 	TodoTaskService taskService;
@@ -30,73 +31,104 @@ public class TodoTaskRestController {
 	
 		
 	@RequestMapping(value="/todos",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<List<TodoTask>> getAllTask(@RequestParam Optional<Boolean> userDefined) {
-			if(!userDefined.isPresent())
-				return new ResponseEntity<List<TodoTask>>(taskService.findAll(),HttpStatus.OK);
-			else 
-				return new ResponseEntity<List<TodoTask>>(taskService
-						.findAllTasksByUserDefined(userDefined.get()),HttpStatus.OK);
+	public ResponseEntity<List<TodoTask>> getAllTask(@RequestParam Optional<Boolean> userDefined, Authentication auth) {
+		
+			if(!userDefined.isPresent()) {
+				if(isAdmin(auth))
+					return new ResponseEntity<List<TodoTask>>(taskService.findAll(),HttpStatus.OK);
+				else return new ResponseEntity<List<TodoTask>>(HttpStatus.FORBIDDEN);
+			}
+			else {
+				if(userDefined.get().equals(true) && isAdmin(auth)) {
+					return new ResponseEntity<List<TodoTask>>(taskService
+							.findAllTasksByUserDefined(userDefined.get()),HttpStatus.OK);
+				}
+				else if(userDefined.get().equals(false))
+					return new ResponseEntity<List<TodoTask>>(taskService
+							.findAllTasksByUserDefined(userDefined.get()),HttpStatus.OK);
+				else return new ResponseEntity<List<TodoTask>>(HttpStatus.FORBIDDEN);
+			}
+			
+				
 	}
 	
 	
 	@RequestMapping(value="/todos",method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<List<TodoTask>> saveNewTask(@RequestBody TodoTask todo) {
-		Integer userId = todo.getUser().getId();
-		if(userId != null && userService.findUser(userId.intValue()) != null) {
-			User user = userService.findUser(userId.intValue());
-			if(todo.getStatus()!= null) 
-				todo.setStatus(TaskStatus.TODO);
-			todo.setUserDefined(true);
-			user.getTodoTasks().add(todo);
-			userService.save(user);
-			taskService.saveTask(todo);
-		} else return new ResponseEntity<List<TodoTask>>(HttpStatus.NOT_FOUND);
-		return new ResponseEntity<List<TodoTask>>(HttpStatus.CREATED);
+	public ResponseEntity<TodoTask> saveNewTask(@RequestBody TodoTask todo, Authentication auth) {
+		
+		if(auth.getName() != null && todo.getTitle() != null) {
+			User user = userService.findUserByLogin(auth.getName());
+			if(user != null) {
+				if(hasPermission(auth, user.getLogin())) {
+					
+					if(todo.getStatus()== null) 
+						todo.setStatus(TaskStatus.TODO);
+					if(isAdmin(auth) && !todo.isUserDefined()) {
+						taskService.saveTask(todo);
+					} else {
+						todo.setUserDefined(true);
+						todo.setUser(user);
+						user.getTodoTasks().add(todo);
+						userService.save(user);
+						taskService.saveTask(todo);
+					}
+					
+				} else return new ResponseEntity<TodoTask>(HttpStatus.FORBIDDEN);
+			} else return new ResponseEntity<TodoTask>(HttpStatus.NOT_FOUND);
+		} else return new ResponseEntity<TodoTask>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<TodoTask>(todo, HttpStatus.CREATED);
 	}
 	
 	
 	@RequestMapping(value="/todos/{id}",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<TodoTask> getTask(@PathVariable int id) {
-		if(taskService.findTask(id) != null)
-			return new ResponseEntity<TodoTask>(taskService.findTask(id),HttpStatus.OK);
+	public ResponseEntity<TodoTask> getTask(@PathVariable int id, Authentication auth) {
+		TodoTask task = taskService.findTask(id);
+		if(task != null)
+			if(!task.isUserDefined() || hasPermission(auth, task.getUser().getLogin())) {
+				return new ResponseEntity<TodoTask>(taskService.findTask(id),HttpStatus.OK);				
+			} else return new ResponseEntity<TodoTask>(HttpStatus.FORBIDDEN);
 		else return new ResponseEntity<TodoTask>(HttpStatus.NOT_FOUND);
 	}
 	
 	
 	@RequestMapping(value="/todos/by/user",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<List<TodoTask>> getTaskByUser(@RequestParam int userid) {
+	public ResponseEntity<List<TodoTask>> getTaskByUser(@RequestParam int userid, Authentication auth) {
 		User user = userService.findUser(userid);
 		if(user != null) 
-			return new ResponseEntity<List<TodoTask>>(user.getTodoTasks(), HttpStatus.OK);
+			if(hasPermission(auth, user.getLogin())) {
+				return new ResponseEntity<List<TodoTask>>(user.getTodoTasks(), HttpStatus.OK);
+			}else return new ResponseEntity<List<TodoTask>>(HttpStatus.FORBIDDEN);
 		else
 			return new ResponseEntity<List<TodoTask>>(HttpStatus.NOT_FOUND);
 	}
 	
 	
 	@RequestMapping(value="/todos/{id}",method=RequestMethod.DELETE)
-	public ResponseEntity<TodoTask> deleteTask(@PathVariable int id) {
+	public ResponseEntity<TodoTask> deleteTask(@PathVariable int id, Authentication auth) {
 		TodoTask tdt = taskService.findTask(id);
 		if(tdt != null) {
-			if(tdt.isUserDefined()) {
+			if((tdt.isUserDefined() && hasPermission(auth, tdt.getUser().getLogin())) ||
+					!tdt.isUserDefined() && isAdmin(auth)) {
 				taskService.deleteTask(id);
 				return new ResponseEntity<TodoTask>(HttpStatus.NO_CONTENT);
-			} else return new ResponseEntity<TodoTask>(HttpStatus.UNAUTHORIZED);
+			} else return new ResponseEntity<TodoTask>(HttpStatus.FORBIDDEN);
 		}
 		else return new ResponseEntity<TodoTask>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value="/todos/{id}",method=RequestMethod.PUT, consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<TodoTask> updateTask(@PathVariable int id, @RequestBody TodoTask task) {
+	public ResponseEntity<TodoTask> updateTask(@PathVariable int id, @RequestBody TodoTask task, Authentication auth) {
 		TodoTask t = taskService.findTask(id);
 		if(t != null) {
-			if(t.isUserDefined()) {
+			if((t.isUserDefined() && hasPermission(auth, t.getUser().getLogin())) ||
+					!t.isUserDefined() && isAdmin(auth)) {
 				t.setTitle(task.getTitle());
 				t.setDescription(task.getDescription());
 				t.setStatus(task.getStatus());
 				taskService.saveTask(t);
 				return new ResponseEntity<TodoTask>(t, HttpStatus.OK);
 			}
-			else return new ResponseEntity<TodoTask>(HttpStatus.UNAUTHORIZED);
+			else return new ResponseEntity<TodoTask>(HttpStatus.FORBIDDEN);
 		}
 		else return new ResponseEntity<TodoTask>(HttpStatus.NOT_FOUND);
 	}

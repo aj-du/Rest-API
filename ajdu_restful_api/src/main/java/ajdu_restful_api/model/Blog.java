@@ -43,7 +43,7 @@ public class Blog {
 		"opinions","comments",
 		"dateCreated", "gender",
 		"mainUsers", "permittedUsers",
-		"profileMedia", "active", "partner",
+		"profileImage", "active", "partner",
 		"marriage", "wedding", "todoTasks"
 		})
 	private User user;

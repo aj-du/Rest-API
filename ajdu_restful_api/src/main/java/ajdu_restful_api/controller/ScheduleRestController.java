@@ -44,15 +44,18 @@ public class ScheduleRestController extends AuthenticatedRestController {
 		}
 		else {		
 			User u = userService.findUser(schedule.getUser().getId());
-			if(!hasPermission(auth, u.getLogin()))
-				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-			
-			if(u.getSchedule() != null)
-				return new ResponseEntity<Schedule>(HttpStatus.CONFLICT);
-			else {			
-				scheduleService.save(schedule);
-				return new ResponseEntity<Schedule>(schedule, HttpStatus.CREATED);
-			}
+			if(u != null) {
+				if(!hasPermission(auth, u.getLogin()))
+					return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+				
+				if(u.getSchedule() != null)
+					return new ResponseEntity<Schedule>(HttpStatus.CONFLICT);
+				else {			
+					scheduleService.save(schedule);
+					return new ResponseEntity<Schedule>(schedule, HttpStatus.CREATED);
+				}
+			} else
+				return new ResponseEntity<Schedule>(HttpStatus.NOT_FOUND);
 		}
 	}
 	
