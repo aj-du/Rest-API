@@ -63,7 +63,7 @@ public class TodoTaskRestController extends AuthenticatedRestController {
 					
 					if(todo.getStatus()== null) 
 						todo.setStatus(TaskStatus.TODO);
-					if(isAdmin(auth) && !todo.isUserDefined()) {
+					if(isAdmin(auth) && todo.isUserDefined() != null) {
 						taskService.saveTask(todo);
 					} else {
 						todo.setUserDefined(true);

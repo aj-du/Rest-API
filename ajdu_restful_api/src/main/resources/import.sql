@@ -6,7 +6,7 @@ insert into user_role (user_id,role) values (1,"REG_USER");
 insert into user_role (user_id,role) values (2,"REG_USER");
 
 insert into schedule (user_id) values (1);
-nsert into schedule (user_id) values (2);
+insert into schedule (user_id) values (2);
 
 insert into calendar_task (title, description, schedule_id,status, start, end, location) values ("Fryzjer", "Umówić się na porównanie kolorów",1,"TODO", date("2017-06-04"), date("2017-06-30"), "Gdańsk - Fryzjer Trendy")
 insert into calendar_task (title, description, schedule_id,status, start, location) values ("Oglądanie sali", "Obejrzeć salę weselną",1,"TODO", date("2017-02-14"), "Luzino")

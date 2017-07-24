@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ajdu_restful_api.model.Package;
 import ajdu_restful_api.model.Role;
 import ajdu_restful_api.model.Schedule;
+import ajdu_restful_api.model.TodoTask;
 import ajdu_restful_api.model.User;
 import ajdu_restful_api.service.PartnerService;
 import ajdu_restful_api.service.UserService;
@@ -169,6 +170,16 @@ public class UserRestController extends AuthenticatedRestController {
 				return new ResponseEntity<Schedule>(s,HttpStatus.OK);
 			else return new ResponseEntity<Schedule>(HttpStatus.FORBIDDEN);
 		else return new ResponseEntity<Schedule>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(value="/users/{id}/todos", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<TodoTask>> getUserTodos(@PathVariable int id, Authentication auth){
+		User u = userService.findUser(id);
+		if(u != null && u.getTodoTasks() != null) 
+			if(hasPermission(auth, u.getLogin()))
+				return new ResponseEntity<List<TodoTask>>(u.getTodoTasks(),HttpStatus.OK);
+			else return new ResponseEntity<List<TodoTask>>(HttpStatus.FORBIDDEN);
+		else return new ResponseEntity<List<TodoTask>>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value="/users/{id}/package", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)

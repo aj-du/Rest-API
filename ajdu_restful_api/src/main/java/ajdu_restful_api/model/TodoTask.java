@@ -17,7 +17,7 @@ public class TodoTask extends GenericTask {
 	private Integer id;
 	
 	@Column(columnDefinition="boolean default false")
-	private boolean isUserDefined;
+	private Boolean isUserDefined;
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
@@ -38,7 +38,7 @@ public class TodoTask extends GenericTask {
 	public TodoTask(){}
 	
 
-	public TodoTask(String name, String desc, boolean isUserDefined) {
+	public TodoTask(String name, String desc, Boolean isUserDefined) {
 		super(name, desc, TaskStatus.TODO);
 		this.isUserDefined = isUserDefined;
 	}
@@ -53,11 +53,11 @@ public class TodoTask extends GenericTask {
 		this.id = id;
 	}
 
-	public boolean isUserDefined() {
+	public Boolean isUserDefined() {
 		return isUserDefined;
 	}
 
-	public void setUserDefined(boolean isUserDefined) {
+	public void setUserDefined(Boolean isUserDefined) {
 		this.isUserDefined = isUserDefined;
 	}
 	
