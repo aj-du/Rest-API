@@ -43,6 +43,17 @@ public class ServiceService {
 		serviceRepository.save(service);
 	}
 	
+	public void savePartial(Service service, Integer id) {
+		Service newService = findService(id);
+		if(service.getCategories() != null) newService.setCategories(service.getCategories());
+		if(service.getCost() != null) newService.setCost(service.getCost());
+		if(service.getName() != null) newService.setName(service.getName());
+		if(service.getDescription() != null) newService.setDescription(service.getDescription());
+		if(service.getMedia() != null) newService.setMedia(service.getMedia());
+		if(service.isDistinct() != null) newService.setDistinct(service.isDistinct());
+		serviceRepository.save(newService);
+	}
+	
 	public void deleteService(int id) {
 		serviceRepository.delete(id);
 	}

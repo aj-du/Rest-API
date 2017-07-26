@@ -26,7 +26,7 @@ public class Service {
 	private String description;
 	private BigDecimal cost;
 	@Column(columnDefinition="boolean default false")
-	private boolean isDistinct;
+	private Boolean isDistinct;
 	
 	@ManyToOne
 	@JoinColumn(name="organization_id")
@@ -73,7 +73,7 @@ public class Service {
 
 
 	public Service(String name, String description, BigDecimal cost,
-			boolean isDistinct, Organization organization, List<Media> media,
+			Boolean isDistinct, Organization organization, List<Media> media,
 			List<Category> categories, List<Opinion> opinions) {
 		super();
 		this.name = name;
@@ -127,12 +127,12 @@ public class Service {
 	}
 
 
-	public boolean isDistinct() {
+	public Boolean isDistinct() {
 		return isDistinct;
 	}
 
 
-	public void setDistinct(boolean isDistinct) {
+	public void setDistinct(Boolean isDistinct) {
 		this.isDistinct = isDistinct;
 	}
 

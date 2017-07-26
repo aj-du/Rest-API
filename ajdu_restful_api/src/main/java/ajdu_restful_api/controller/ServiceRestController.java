@@ -104,13 +104,18 @@ public class ServiceRestController {
 	public ResponseEntity<Service> updateService(@PathVariable int id, @RequestBody Service service) {
 		Service s = serviceService.findService(id);
 		if(s != null) {
-			s.setName(service.getName());
-			s.setDescription(service.getDescription());
-			s.setCategories(service.getCategories());
-			s.setCost(service.getCost());
-			s.setDistinct(service.isDistinct());
-			s.setOpinions(service.getOpinions());
-			serviceService.saveService(s);
+			service.setId(id);
+			serviceService.saveService(service);
+			return new ResponseEntity<Service>(s, HttpStatus.OK);
+		}
+		else return new ResponseEntity<Service>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(value="/services/{id}",method=RequestMethod.PATCH, consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Service> patchService(@PathVariable int id, @RequestBody Service service) {
+		Service s = serviceService.findService(id);
+		if(s != null) {
+			serviceService.savePartial(service, id);
 			return new ResponseEntity<Service>(s, HttpStatus.OK);
 		}
 		else return new ResponseEntity<Service>(HttpStatus.NOT_FOUND);
