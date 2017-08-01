@@ -146,19 +146,28 @@ public class UserRestController extends AuthenticatedRestController {
 		User u = userService.findUser(id);
 		if(u != null) {
 			if(hasPermission(auth, u.getLogin())) {
-				u.setActive(user.isActive());
-				u.setEmail(user.getEmail());
-				u.setFirstName(user.getFirstName());
-				u.setLastName(user.getLastName());
-				u.setLogin(user.getLogin());
-				u.setPassword(user.getPassword());
-				u.setPartner(user.getPartner());
-				u.setRoles(user.getRoles());
-				userService.save(u);
-				return new ResponseEntity<User>(u, HttpStatus.OK);
+				user.setId(id);
+				if(u.getPartner() != null)
+					user.getPartner().setId(u.getPartner().getId());
+				partnerService.save(user.getPartner());
+				userService.save(user);
+				return new ResponseEntity<User>(user, HttpStatus.OK);
 			} else return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
 		}
 		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+	}
+	
+	@RequestMapping(value="/users/{id}",method=RequestMethod.PATCH, consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<User> patchService(@PathVariable int id, @RequestBody User user, Authentication auth) {
+		User u = userService.findUser(id);
+		if(u != null) {
+			if(!hasPermission(auth, u.getLogin()))
+				return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
+			
+			userService.savePartial(user, id);
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		}
+		else return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value="/users/by/login",method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)

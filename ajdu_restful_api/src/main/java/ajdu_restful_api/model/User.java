@@ -107,7 +107,7 @@ public class User extends Person {
 	})
 	private Media profileImage;	
 
-	private boolean active;
+	private Boolean active;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP")
@@ -159,7 +159,7 @@ public class User extends Person {
 	public User(String firstName, String lastName, String login,
 			String password, String email, Gender gender, Partner partner,
 			List<Role> roles, Package pack, Blog blog, Schedule schedule,
-			Media profileImage, boolean active, Date dateCreated,
+			Media profileImage, Boolean active, Date dateCreated,
 			List<Opinion> opinions, List<Comment> comments) {
 		super(firstName,lastName,gender);
 		this.login = login;
@@ -218,11 +218,11 @@ public class User extends Person {
 		this.roles = roles;
 	}
 
-	public boolean isActive() {
+	public Boolean isActive() {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 

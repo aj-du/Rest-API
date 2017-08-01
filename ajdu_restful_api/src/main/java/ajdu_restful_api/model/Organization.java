@@ -42,7 +42,7 @@ public class Organization {
 	private String phoneNumber;
 	
 	@Column(columnDefinition="boolean default false")
-	private boolean active;
+	private Boolean active;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(columnDefinition="timestamp default CURRENT_TIMESTAMP")
@@ -68,7 +68,7 @@ public class Organization {
 	public Organization() {}
 
 	public Organization(String name, String login, String password,
-			String email, boolean active, Date dateCreated, Address address,
+			String email, Boolean active, Date dateCreated, Address address,
 			List<Category> categories) {
 		super();
 		this.name = name;
@@ -122,11 +122,11 @@ public class Organization {
 		this.email = email;
 	}
 
-	public boolean isActive() {
+	public Boolean isActive() {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 

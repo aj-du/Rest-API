@@ -79,9 +79,11 @@ public class OrganizationRestController extends AuthenticatedRestController {
 	
 	
 	@RequestMapping(value="/orgs/{id}",method=RequestMethod.DELETE)
-	public ResponseEntity<Organization> deleteOrg(@PathVariable int id) {
+	public ResponseEntity<Organization> deleteOrg(@PathVariable int id, Authentication auth) {
 		Organization org = organizationService.findOneOrg(id);
 		if(org != null) {
+			if(!hasPermission(auth, org.getLogin()))
+				return new ResponseEntity<Organization>(HttpStatus.FORBIDDEN);
 			organizationService.deleteOrg(id);
 			return new ResponseEntity<Organization>(HttpStatus.NO_CONTENT);
 		}
@@ -90,22 +92,36 @@ public class OrganizationRestController extends AuthenticatedRestController {
 	}
 	
 	@RequestMapping(value="/orgs/{id}",method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<Organization> updateOrg(@PathVariable int id, @RequestBody Organization org) {
+	public ResponseEntity<Organization> updateOrg(@PathVariable int id, @RequestBody Organization org, Authentication auth) {
 		Organization o = organizationService.findOneOrg(id);
 		if(o != null) {
-			o.setName(org.getName());
-			o.setActive(org.isActive());
-			o.setAddress(org.getAddress());
-			o.setEmail(org.getEmail());
-			o.setLogin(org.getLogin());
-			o.setPassword(org.getPassword());
-			o.setPhoneNumber(org.getPhoneNumber());
-			addressService.saveAddress(o.getAddress());
-			organizationService.saveOrg(o);
+			if(!hasPermission(auth, o.getLogin()))
+				return new ResponseEntity<Organization>(HttpStatus.FORBIDDEN);
+			
+			org.setId(id);
+			if(o.getAddress() != null) {
+				org.getAddress().setId(o.getAddress().getId());
+			}
+			addressService.saveAddress(org.getAddress());
+			organizationService.saveOrg(org);
 			return new ResponseEntity<Organization>(o, HttpStatus.OK);
 		}
 		else 
 			return new ResponseEntity<Organization>(HttpStatus.NOT_FOUND);
+	}
+	
+	
+	@RequestMapping(value="/orgs/{id}",method=RequestMethod.PATCH, consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Organization> patchService(@PathVariable int id, @RequestBody Organization org, Authentication auth) {
+		Organization o = organizationService.findOneOrg(id);
+		if(o != null) {
+			if(!hasPermission(auth, o.getLogin()))
+				return new ResponseEntity<Organization>(HttpStatus.FORBIDDEN);
+			
+			organizationService.saveOrgPartial(org, id);
+			return new ResponseEntity<Organization>(org, HttpStatus.OK);
+		}
+		else return new ResponseEntity<Organization>(HttpStatus.NOT_FOUND);
 	}
 	
 	
