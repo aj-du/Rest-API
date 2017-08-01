@@ -153,7 +153,7 @@ public class PackageRestController extends AuthenticatedRestController {
 	
 	
 	@RequestMapping(value="/packages/{packageId}/services/{serviceId}",
-			method=RequestMethod.DELETE,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
+			method=RequestMethod.DELETE)
 	public ResponseEntity<Service> deleteServiceFromPackage(@PathVariable int packageId, @PathVariable int serviceId, Authentication auth) {
 		Package p = packService.findPackage(packageId);
 		Service s = serviceService.findService(serviceId);

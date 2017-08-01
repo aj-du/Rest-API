@@ -1,5 +1,6 @@
 package ajdu_restful_api.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import ajdu_restful_api.model.Role;
 import ajdu_restful_api.model.Schedule;
 import ajdu_restful_api.model.TodoTask;
 import ajdu_restful_api.model.User;
+import ajdu_restful_api.service.PackageService;
 import ajdu_restful_api.service.PartnerService;
 import ajdu_restful_api.service.UserService;
 
@@ -31,7 +33,8 @@ public class UserRestController extends AuthenticatedRestController {
 	private UserService userService;
 	@Autowired
 	private PartnerService partnerService;
-	
+	@Autowired
+	private PackageService packService;
 	
 	@GetMapping("/hello")
 	public String hello(){
@@ -59,15 +62,21 @@ public class UserRestController extends AuthenticatedRestController {
 						roles.add(Role.REG_USER);
 						user.setRoles(roles);
 					}
+					userService.save(user);	
 				
 					// adding schedule for user on creation
-					if(user.getSchedule() == null) {
-						Schedule schedule = new Schedule();
-						schedule.setUser(user);
-						user.setSchedule(schedule);	
-					}
+					Schedule schedule = new Schedule();
+					schedule.setUser(user);
+					user.setSchedule(schedule);					
+				
+					// adding package for user on creation
+					Package pack = new Package();
+					pack.setTotalCost(BigDecimal.ZERO);
+					pack.setUser(user);
+					packService.save(pack);
+					user.setPack(pack);	
 					
-					userService.save(user);	
+					userService.save(user);
 					return new ResponseEntity<User>(user, HttpStatus.CREATED);
 				}
 				else return new ResponseEntity<User>(HttpStatus.CONFLICT);
