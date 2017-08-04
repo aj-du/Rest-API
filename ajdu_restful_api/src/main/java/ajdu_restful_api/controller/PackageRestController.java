@@ -126,29 +126,34 @@ public class PackageRestController extends AuthenticatedRestController {
 	
 	
 	@RequestMapping(value="/packages/{id}/services", method=RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<List<Service>> addServiceToPackage(@RequestBody Service service, @PathVariable int id, Authentication auth) {
+	public ResponseEntity<List<Service>> addServiceToPackage(@RequestBody List<Service> services, @PathVariable int id, Authentication auth) {
 		Package p = packService.findPackage(id);
 		if(p==null)
 			return new ResponseEntity<List<Service>>(HttpStatus.NOT_FOUND);
-		else if(service.getId() == null)
-			return new ResponseEntity<List<Service>>(HttpStatus.BAD_REQUEST);
 		else {
+			for(Service serv : services) {
+				if(serv.getId() == null) return new ResponseEntity<List<Service>>(HttpStatus.BAD_REQUEST);
+			}
+			
 			User u = userService.findUser(p.getUser().getId());
 			if(!hasPermission(auth, u.getLogin()))
 				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 			
-			Service s = serviceService.findService(service.getId());
-			if(s == null)
-				return new ResponseEntity<List<Service>>(HttpStatus.NOT_FOUND);
-			else if(p.getServices().contains(s)){
-				return new ResponseEntity<List<Service>>(HttpStatus.CONFLICT);
+			for(Service serv : services) {
+				Service s = serviceService.findService(serv.getId());
+				if(s == null)
+					return new ResponseEntity<List<Service>>(HttpStatus.NOT_FOUND);
+				else if(p.getServices().contains(s)){
+					return new ResponseEntity<List<Service>>(HttpStatus.CONFLICT);
+				}
+				else {
+					p.getServices().add(s);
+				}
 			}
-			else {
-				p.getServices().add(s);
-				packService.save(p);
-				return new ResponseEntity<List<Service>>(p.getServices(), HttpStatus.CREATED);
-			}
-		}		
+
+			packService.save(p);
+			return new ResponseEntity<List<Service>>(p.getServices(), HttpStatus.CREATED);
+		}	
 	}
 	
 	
