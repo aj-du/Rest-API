@@ -144,7 +144,8 @@ public class PackageRestController extends AuthenticatedRestController {
 				if(s == null)
 					return new ResponseEntity<List<Service>>(HttpStatus.NOT_FOUND);
 				else if(p.getServices().contains(s)){
-					return new ResponseEntity<List<Service>>(HttpStatus.CONFLICT);
+					continue;
+					// return new ResponseEntity<List<Service>>(HttpStatus.CONFLICT);
 				}
 				else {
 					p.getServices().add(s);

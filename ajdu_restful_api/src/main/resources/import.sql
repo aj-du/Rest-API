@@ -1,5 +1,5 @@
-insert into user (first_name,last_name,gender,email,login,password, active) values ("Artur","Borkowski","M","s12020@pjwstk.edu.pl","s12020","Haslo1234", true)
-insert into user (first_name,last_name,gender,email,login,password, active) values ("Zbychu","Kowalski","M","z.kowal@o2.pl","zkow","password", true)
+insert into user (first_name,last_name,gender,email,login,password, active) values ("Jan","Nowak","M","jnowak@pjwstk.edu.pl","s12020","Haslo1234", true)
+insert into user (first_name,last_name,gender,email,login,password, active) values ("Anna","Kowalska","M","akowal@o2.pl","zkow","password", true)
 
 insert into user_role (user_id,role) values (1,"ADMIN");
 insert into user_role (user_id,role) values (1,"REG_USER");
@@ -60,13 +60,32 @@ insert into todo_task (title, description, status) values ("Podziękowania dla g
 insert into todo_task (title, description, status) values ("Księga pamiątkowa", "", "TODO");
 
 
-insert into address (city, line1, line2, postal_code, region) values ("Gdansk","Sala Weselna \"Olimp\"","Kartuska 123","80-012","pomorskie");
-insert into address (city, line1, line2, postal_code, region) values ("Wejherowo","Restauracja \"Nova\"","Lęborska 12H","80-240","pomorskie");
+insert into address (city, line1, line2, postal_code, region) values ("Dummy City","Sala Weselna \"Olimp\"","Dummy Street 99","80-001","pomorskie");
+insert into address (city, line1, line2, postal_code, region) values ("Dummy City","Restauracja \"Nova\"","Dummy Street 99","80-001","pomorskie");
+insert into address (city, line1, line2, postal_code, region) values ("Dummy City","Zespół Companieros","Dummy Street 99","80-001","pomorskie");
+insert into address (city, line1, line2, postal_code, region) values ("Dummy City","Alabama Band","Dummy Street 99","80-001","pomorskie");
+insert into address (city, line1, line2, postal_code, region) values ("Dummy City","Biała Perła","Dummy Street 99","80-001","pomorskie");
+insert into address (city, line1, line2, postal_code, region) values ("Dummy City","Agata Malinowska","Dummy Street 99","80-001","pomorskie");
+insert into address (city, line1, line2, postal_code, region) values ("Dummy City","Jan Zięba","Dummy Street 99","80-001","pomorskie");
+insert into address (city, line1, line2, postal_code, region) values ("Dummy City","Kazimierz Nowacki","Dummy Street 99","80-001","pomorskie");
+insert into address (city, line1, line2, postal_code, region) values ("Dummy City","Karolina Miś","Dummy Street 99","80-001","pomorskie");
+insert into address (city, line1, line2, postal_code, region) values ("Dummy City","Hotel Perfect","Dummy Street 99","80-001","pomorskie");
 
-insert into organization (name,login,password,active,email,address_id) values ("Sala Weselna \"Olimp\"","olimp_gda","salaweslna123a",true,"olimp_gdansk@firma.pl",1);
+insert into organization (name,login,password,active,email,address_id, phone_number) values ("Sala Weselna \"Olimp\"","olimp_gda","salaweslna123a",true,"olimp_gdansk@firma.pl",1, "58 999-99-99");
+insert into organization (name,login,password,active,email,address_id, phone_number) values ("Restauracja \"Nova\"","restauracjanova","password",true,"restauracjanoca@firma.pl",2, "58 999-99-99");
+insert into organization (name,login,password,active,email,address_id, phone_number) values ("Companieros - Zespół weselny","companieros","password",true,"companieros@firma.pl",3, "58 999-99-99");
+insert into organization (name,login,password,active,email,address_id, phone_number) values ("Zespół ALABAMA","alabama","password",true,"alabama@firma.pl",4, "58 999-99-99");
+insert into organization (name,login,password,active,email,address_id, phone_number) values ("Biała Perła","b_perla","password",true,"b_perla@firma.pl",5, "58 999-99-99");
+insert into organization (name,login,password,active,email,address_id, phone_number) values ("Salon Fryzjerski \"Agata\"","fryzjer_agata","password",true,"fryzjer_agata@firma.pl",6, "58 999-99-99");
+insert into organization (name,login,password,active,email,address_id, phone_number) values ("Fryzjer Johny","johnyyy","password",true,"johnyyy@firma.pl",7, "58 999-99-99");
+insert into organization (name,login,password,active,email,address_id, phone_number) values ("Usługi Foto-Video Kazimierz","kazik_foto","password",true,"kazik_foto@firma.pl",8, "58 999-99-99");
+insert into organization (name,login,password,active,email,address_id, phone_number) values ("Fotografia u Karoliny","karolina1988","password",true,"foto_karola@firma.pl",9, "58 999-99-99");
+insert into organization (name,login,password,active,email,address_id, phone_number) values ("Hotel Perfect ***","perfect_hotel","password",true,"perfect@firma.pl",10, "58 999-99-99");
+
+
 
 insert into category (name) values ("Sala weselna");
-insert into category (name) values ("Zespół");
+insert into category (name) values ("Muzyka");
 insert into category (name) values ("Catering");
 insert into category (name) values ("Obsługa");
 insert into category (name) values ("Fotografia");
@@ -79,13 +98,47 @@ insert into category (name) values ("Koordynacja");
 insert into category (name) values ("Hotel");
 insert into category (name) values ("Transport");
 insert into category (name) values ("Odzież");
-insert into category (name) values ("Atrakcje dodatkowe");
+insert into category (name) values ("Inne");
 
-insert into service (name, cost, organization_id) values ("Wynajem sali weselnej (24h)",12000.00,1);
-insert into service (name, cost, organization_id) values ("Wynajem sali z obsługą (24h)",18500.00,1);
-insert into service (name, cost, organization_id) values ("Wynajem kuchni (24h)",8500.00,1);
-insert into service (name, cost, organization_id) values ("Pokoje hotelowe",15000.00,1);
-insert into service (name, cost, organization_id) values ("Parking",700.00,1);
+insert into service (name,description, cost, organization_id) values ("Wynajem sali weselnej (24h)","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",12000.00,1);
+insert into service (name,description, cost, organization_id) values ("Wynajem sali z obsługą (24h)","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",18500.00,1);
+insert into service (name,description, cost, organization_id) values ("Wynajem kuchni (24h)","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",8500.00,1);
+insert into service (name,description,cost, organization_id) values ("Pokoje Hotelowe","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",750.00,1);
+insert into service (name,description, cost, organization_id) values ("Parking","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",700.00,1);
+insert into service (name,description, cost, organization_id) values ("Menu Weselne standard","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",10000.00,2);
+insert into service (name,description, cost, organization_id) values ("Menu Weselne premium","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",14000.00,2);
+insert into service (name,description, cost, organization_id) values ("Menu Weselne standard + alkohol","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",15000.00,2);
+insert into service (name,description, cost, organization_id) values ("Menu Weselne premium + alkohol","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",20000.00,2);
+insert into service (name,description, cost, organization_id) values ("Oprawa muzyczna wesela","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",4000.00,3);
+insert into service (name,description, cost, organization_id) values ("Oprawa muzyczna wesela + poprawiny","",5000.00,3);
+insert into service (name,description, cost, organization_id) values ("Wyprowadzenie Panny Młodej","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",300.00,3);
+insert into service (name,description, cost, organization_id) values ("Oprawa muzyczna wesela","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",3700.00,4);
+insert into service (name,description, cost, organization_id) values ("Oprawa muzyczna wesela z poprawinami","",4900.00,4);
+insert into service (name,description, cost, organization_id) values ("Trąbka na ślubie","",300.00,4);
+insert into service (name,description, cost, organization_id) values ("Sala weselna z obsługą","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",8500.00,5);
+insert into service (name,description, cost, organization_id) values ("Pakiet hotelowy","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",3000.00,5);
+insert into service (name,description, cost, organization_id) values ("Pakiet hotelowy VIP","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",5000.00,5);
+insert into service (name,description, cost, organization_id) values ("Loki","",200.00,6);
+insert into service (name,description, cost, organization_id) values ("Koki","",220.00,6);
+insert into service (name,description, cost, organization_id) values ("Farbowanie","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",120.00,6);
+insert into service (name,description, cost, organization_id) values ("Strzyżenie (włosy krótkie)","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",80.00,6);
+insert into service (name,description, cost, organization_id) values ("Strzyżenie (włosy długie)","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",130.00,6);
+insert into service (name,description, cost, organization_id) values ("Strzyżenie","",50.00,7);
+insert into service (name,description, cost, organization_id) values ("Golenie","Lorem ipsum dolor sit amet.",40.00,7);
+insert into service (name,description, cost, organization_id) values ("Mycie","",20.00,7);
+insert into service (name,description, cost, organization_id) values ("Filmowanie ślubu i wesela (1 kamera)","Lorem ipsum dolor sit amet.",1200.00,8);
+insert into service (name,description, cost, organization_id) values ("Filmowanie ślubu i wesela (2 kamery)","Lorem ipsum dolor sit amet.",1800.00,8);
+insert into service (name,description, cost, organization_id) values ("Zdjęcia ze ślubu i wesela (1000 sztuk)","Lorem ipsum dolor sit amet.",1000.00,8);
+insert into service (name,description, cost, organization_id) values ("Sesja ślubna ","Lorem ipsum dolor sit amet.",500.00,8);
+insert into service (name,description, cost, organization_id) values ("Zdjęcia na ślubie","Lorem ipsum dolor sit amet.",500.00,9);
+insert into service (name,description, cost, organization_id) values ("Zdjęcia z przygotowań Pary Młodej","Lorem ipsum dolor sit amet.",150.00,9);
+insert into service (name,description, cost, organization_id) values ("Zdjęcia z wesela","Lorem ipsum dolor sit amet.",1500.00,9);
+insert into service (name,description, cost, organization_id) values ("Sesja ślubna","Lorem ipsum dolor sit amet.",400.00,9);
+insert into service (name,description, cost, organization_id) values ("Pakiet weselny (oszczędzasz 350 PLN!)","Lorem ipsum dolor sit amet.",2200.00,9);
+insert into service (name,description, cost, organization_id) values ("Sala bankietowa","Lorem ipsum dolor sit amet.",15000.00,10);
+insert into service (name,description, cost, organization_id) values ("Catering Pakiet Srebrny","Lorem ipsum dolor sit amet.",8000.00,10);
+insert into service (name,description, cost, organization_id) values ("Catering Pakiet Złoty","Lorem ipsum dolor sit amet.",13000.00,10);
+insert into service (name,description, cost, organization_id) values ("Pokoje gościnne - pakiet weselny","Lorem ipsum dolor sit amet.",10000.00,10);
 
 insert into opinion (rate, content, service_id, user_id) values (5, "Sala przestronna, miła obsługa, wyposażona w światła, niezła akustyka. Kierownik sali pełni rolę mistrza ceremonii, co jest bardzo przydatne przy weselu. Polecamy!!!", 2,1);
 insert into opinion (rate, content, service_id, user_id) values (3, "Sala taka sobie. Klimatyzacja była zepsuta na naszym weselu i ludzie tonęli we własnym pocie. 3/5", 2,2);
@@ -97,11 +150,72 @@ insert into service_category (service_id, category_id) values (2,4);
 insert into service_category (service_id, category_id) values (1,3);
 insert into service_category (service_id, category_id) values (1,2);
 insert into service_category (service_id, category_id) values (1,1);
+insert into service_category (service_id, category_id) values (4,12);
+insert into service_category (service_id, category_id) values (5,12);
+insert into service_category (service_id, category_id) values (5,13);
+insert into service_category (service_id, category_id) values (5,15);
+insert into service_category (service_id, category_id) values (6,3);
+insert into service_category (service_id, category_id) values (7,3);
+insert into service_category (service_id, category_id) values (8,3);
+insert into service_category (service_id, category_id) values (9,3);
+insert into service_category (service_id, category_id) values (10,2);
+insert into service_category (service_id, category_id) values (11,2);
+insert into service_category (service_id, category_id) values (12,2);
+insert into service_category (service_id, category_id) values (13,2);
+insert into service_category (service_id, category_id) values (14,2);
+insert into service_category (service_id, category_id) values (15,2);
+insert into service_category (service_id, category_id) values (16,1);
+insert into service_category (service_id, category_id) values (16,4);
+insert into service_category (service_id, category_id) values (17,12);
+insert into service_category (service_id, category_id) values (18,12);
+insert into service_category (service_id, category_id) values (19,7);
+insert into service_category (service_id, category_id) values (20,7);
+insert into service_category (service_id, category_id) values (21,7);
+insert into service_category (service_id, category_id) values (22,7);
+insert into service_category (service_id, category_id) values (23,7);
+insert into service_category (service_id, category_id) values (24,7);
+insert into service_category (service_id, category_id) values (25,7);
+insert into service_category (service_id, category_id) values (26,7);
+insert into service_category (service_id, category_id) values (27,6);
+insert into service_category (service_id, category_id) values (28,6);
+insert into service_category (service_id, category_id) values (29,5);
+insert into service_category (service_id, category_id) values (30,5);
+insert into service_category (service_id, category_id) values (31,5);
+insert into service_category (service_id, category_id) values (32,5);
+insert into service_category (service_id, category_id) values (33,5);
+insert into service_category (service_id, category_id) values (34,5);
+insert into service_category (service_id, category_id) values (35,5);
+insert into service_category (service_id, category_id) values (35,6);
+insert into service_category (service_id, category_id) values (36,1);
+insert into service_category (service_id, category_id) values (36,4);
+insert into service_category (service_id, category_id) values (37,3);
+insert into service_category (service_id, category_id) values (38,3);
+insert into service_category (service_id, category_id) values (39,12);
+
+
 
 insert into organization_category (organization_id, category_id) values (1,1);
-insert into organization_category (organization_id, category_id) values (1,2);
 insert into organization_category (organization_id, category_id) values (1,3);
 insert into organization_category (organization_id, category_id) values (1,4);
+insert into organization_category (organization_id, category_id) values (1,12);
+insert into organization_category (organization_id, category_id) values (2,3);
+insert into organization_category (organization_id, category_id) values (3,2);
+insert into organization_category (organization_id, category_id) values (4,2);
+insert into organization_category (organization_id, category_id) values (5,1);
+insert into organization_category (organization_id, category_id) values (5,4);
+insert into organization_category (organization_id, category_id) values (5,3);
+insert into organization_category (organization_id, category_id) values (5,12);
+insert into organization_category (organization_id, category_id) values (6,7);
+insert into organization_category (organization_id, category_id) values (7,7);
+insert into organization_category (organization_id, category_id) values (8,5);
+insert into organization_category (organization_id, category_id) values (8,6);
+insert into organization_category (organization_id, category_id) values (9,5);
+insert into organization_category (organization_id, category_id) values (10,1);
+insert into organization_category (organization_id, category_id) values (10,3);
+insert into organization_category (organization_id, category_id) values (10,4);
+insert into organization_category (organization_id, category_id) values (10,12);
+
+
 
 insert into package (user_id) values (1);
 insert into package (user_id) values (2);
