@@ -122,8 +122,6 @@ public class TodoTaskRestController extends AuthenticatedRestController {
 		if(t != null) {
 			if((t.isUserDefined() && hasPermission(auth, t.getUser().getLogin())) ||
 					!t.isUserDefined() && isAdmin(auth)) {
-				t.setTitle(task.getTitle());
-				t.setDescription(task.getDescription());
 				t.setStatus(task.getStatus());
 				taskService.saveTask(t);
 				return new ResponseEntity<TodoTask>(t, HttpStatus.OK);

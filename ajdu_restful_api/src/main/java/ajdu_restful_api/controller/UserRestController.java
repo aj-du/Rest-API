@@ -24,6 +24,7 @@ import ajdu_restful_api.model.TodoTask;
 import ajdu_restful_api.model.User;
 import ajdu_restful_api.service.PackageService;
 import ajdu_restful_api.service.PartnerService;
+import ajdu_restful_api.service.TodoTaskService;
 import ajdu_restful_api.service.UserService;
 
 @RestController
@@ -35,6 +36,8 @@ public class UserRestController extends AuthenticatedRestController {
 	private PartnerService partnerService;
 	@Autowired
 	private PackageService packService;
+	@Autowired
+	private TodoTaskService todoService;
 	
 	@GetMapping("/hello")
 	public String hello(){
@@ -75,6 +78,16 @@ public class UserRestController extends AuthenticatedRestController {
 					pack.setUser(user);
 					packService.save(pack);
 					user.setPack(pack);	
+					
+					List<TodoTask> todosFromDB = todoService.findAllTasksByUserDefined(false);
+					List<TodoTask> usersTodos = new ArrayList<TodoTask>();
+					for(TodoTask t: todosFromDB) {
+						TodoTask todo = new TodoTask(t.getTitle(), t.getDescription(), true);
+						todo.setUser(user);
+						todoService.saveTask(todo);
+						usersTodos.add(todo);
+					}
+					user.setTodoTasks(usersTodos);
 					
 					userService.save(user);
 					return new ResponseEntity<User>(user, HttpStatus.CREATED);
